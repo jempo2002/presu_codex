@@ -1,0 +1,52 @@
+<!-- Layout base -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block titulo%}{%endblock%}</title>
+    <script src = "../static/js/scrollreveal.js"></script>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/estilos.css')}}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/normalize.css')}}>
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="layaut">
+
+        <header>
+<a id="logo" titulo href="{{url_for('index')}}">
+                <h1 class ="logo-arriba">PRESUcosto</h1>
+            </a>
+        </header>
+        <nav class="navinicio">
+            <ul>
+            <li><a class="navainicio" href="{{url_for('index')}}">Inicio</a></li>
+            <li><a class="navainicio" href="{{url_for('registro.registro')}}">Registrese</a></li>
+            <li><a class="navainicio" href="{{url_for('autenticacion.iniciar_sesion')}}">Iniciar Sesión</a></li>
+            <li><a class="navainicio" href="{{url_for('nosotros.nosotros')}}">Nosotros</a></li>
+            </ul>
+        </nav>
+        
+     
+     <section class="seccion-Principal">
+     {% block body %}
+     {% endblock %}
+    </section>
+    
+<footer class="footer-inicio">
+    <nav class="nav-footer">
+     <ul>
+            <li><a href="https://www.instagram.com" target="_blank"><img src="/static/img/instagram.png" alt="Instagram" ></a></li>
+            <li><a href="https://www.facebook.com" target="_blank"><img src="/static/img/facebook.png" alt="Facebook" style="width:45px; height:45px"></a></li>
+            <li><a href="https://www.youtube.com" target="_blank"><img src="/static/img/youtube.png" alt="YouTube"></a></li>
+            <li><a href="https://github.com" target="_blank"><img src="/static/img/github.png" alt="GitHub"></a></li>
+        </ul>
+    </nav>
+    <p>&copy; 2025 Cesar Bravo. Todos los derechos reservados.</p>
+</footer>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "layout_sesion.html" %}
+{% block body %}
+<div class="bloqueheader">
+        <nav class="items-apu">
+               <ul>
+               <li><a href="{{ url_for('entidad.entidad') }}">configuracion</a></li>
+               <li><a href="#">Mano de obra</a></li>
+               <li><a href="#">aiu</a></li>
+               </ul>
+        </nav>
+ </div>
+              {% block sesion %}
+              {% endblock %}
+{% endblock %}

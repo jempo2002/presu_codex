@@ -1,0 +1,28 @@
+<!-- registro de usuario -->
+ <!-- falta implementar registro con redes e incorporar enlace de ya registrado -->
+     {% extends 'layout_base.html' %}
+     {% block body%}
+         <form id="registro" class="fregistro"  action="{{ url_for('registro.registro') }}" method="POST">
+            
+                <legend>Registrese</legend>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+               <ul id="flash-messages">
+               {% for category, message in messages %}
+                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+               {% endfor %}
+               </ul>
+          {% endif %}
+          {% endwith %}
+                <div> 
+                    <input id="nombreUsuario" class="campo" type="text" name="nomCliente" placeholder="Nombre Empresa o Usuario" required> 
+                    <input id="correoUsuario"class="campo" type="email" name="corrCliente" placeholder="Correo" required>
+                    <input id="contraseñaUsuario"class="campo" type="password" name="contrasena" placeholder="contraseña" required>
+                    <input id= "form-registro" class="botonr" type="submit" value="Registrar">
+    
+                <p id="error_registro" class="errorFormulario"></p>
+         </form>
+         <script src = "static/js/registro.js"></script>
+    
+      {% endblock %}
+

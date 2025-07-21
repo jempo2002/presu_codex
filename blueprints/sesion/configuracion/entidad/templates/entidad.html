@@ -1,0 +1,93 @@
+{% extends "layout_configuracion.html" %}
+{% block sesion %}
+ <div class="bloqueheader">
+     
+          <!--seccion empresa-->
+          <form id="seccion-empresa" class="fregistro" action="{{ url_for('entidad.entidad') }}" method="POST" value="empresa">
+               <legend>Datos Empresa</legend>
+               {% with messages = get_flashed_messages(with_categories=true) %}
+               {% if messages %}
+               <ul id="flash-messages">
+                    {% for category, message in messages %}
+                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+               </ul>
+               {% endif %}
+               {% endwith %}
+               <p class="subparrafo">En esta sección puedes modificar los datos de tu empresa</p>
+               <section class="contenido">
+                         {% for field, label, type, placeholder, readonly, valor in [
+                              ('nombre_empresa', 'Nombre Empresa', 'text', 'Nombre Empresa', False, current_user.nombre),
+                              ('nit', 'Nit', 'number', '', False, current_user.nit),
+                              ('correo', 'Email', 'email', '', True, current_user.correo),
+                              ('celular_empresa', 'Telefono Empresa', 'number', '', False, current_user.telefono_empresa),
+                              ('nombre_representante', 'Contacto Directo', 'text', '', False, current_user.nombre_representante),
+                              ('celular_representante', 'Telefono Contacto Directo', 'number', '', False, current_user.telefono_representante),
+                              ('logo', 'Logo', 'text', 'Logo Empresa', False, current_user.logo),
+                              ('direccion', 'Direccion', 'text', 'Direccion Empresa', False, current_user.direccion)
+                         ] %}
+                         <div class="div_datos_Empresa">
+                              <label for="{{ field }}">{{ label }}</label>
+                              <input id="{{ field }}" type="{{ type }}" class="campo2" placeholder="{{ placeholder }}" value="{{ valor }}" name="{{ field }}" {% if readonly %}readonly{% endif %}>
+                         </div>
+                         {% endfor %}
+                          <div class="div_datos_Empresa">
+                              <label for="departamento_empresa">Departamento</label>
+                              <select class="campo2" id="departamento_empresa" type="text" name="departamento_empresa" placeholder="Seleccione una ciudad o municipio" required autocomplete="off">
+                              <option disabled selected>Seleccione un departamento</option>
+                              <option value="Amazonas">Amazonas</option>
+                              <option value="Antioquia">Antioquia</option>
+                              <option value="Arauca">Arauca</option>
+                              <option value="Atlántico">Atlántico</option>
+                              <option value="Bolívar">Bolívar</option>
+                              <option value="Boyacá">Boyacá</option>
+                              <option value="Caldas">Caldas</option>
+                              <option value="Caquetá">Caquetá</option>
+                              <option value="Casanare">Casanare</option>
+                              <option value="Cauca">Cauca</option>
+                              <option value="Cesar">Cesar</option>
+                              <option value="Chocó">Chocó</option>
+                              <option value="Córdoba">Córdoba</option>
+                              <option value="Cundinamarca">Cundinamarca</option>
+                              <option value="Guainía">Guainía</option>
+                              <option value="Guaviare">Guaviare</option>
+                              <option value="Huila">Huila</option>
+                              <option value="La Guajira">La Guajira</option>
+                              <option value="Magdalena">Magdalena</option>
+                              <option value="Meta">Meta</option>
+                              <option value="Nariño">Nariño</option>
+                              <option value="Norte de Santander">Norte de Santander</option>
+                              <option value="Putumayo">Putumayo</option>
+                              <option value="Quindío">Quindío</option>
+                              <option value="Risaralda">Risaralda</option>
+                              <option value="San Andrés y Providencia">San Andrés y Providencia</option>
+                              <option value="Santander">Santander</option>
+                              <option value="Sucre">Sucre</option>
+                              <option value="Tolima">Tolima</option>
+                              <option value="Valle del cauca">Valle del cauca</option>
+                              <option value="Vaupés">Vaupés</option>
+                              <option value="Vichada">Vichada</option>
+                         </select>
+                         </div>
+                         <div class="div_datos_Empresa">
+                              <label for="ciudad-Empresa">Ciudad</label>
+                              <select class="campo2" id="ciudad_empresa" name="ciudadEmpresa" required>
+                                   <option disabled selected>Seleccione una ciudad</option>
+                              </select>
+                         <div>
+               </section>
+               <button class="botonr" type="submit" name="update_empresa">Guardar Cambios</button>
+          </form>
+          <!--seccion aiu-->
+          
+
+     <script>
+         // Pasar datos de mano de obra del backend al frontend
+         // Datos fijos ahora están directamente en el HTML
+     </script>
+     <script src="../static/js/salarios.js"></script>
+     <script src="../static/js/implementos.js"></script>
+     <script src="../static/js/factores-combinaciones.js"></script>
+     <script src="../static/js/factores-compatibilidad.js"></script>
+     <script src="../static/js/config-salario-CargaP.js"></script>
+{% endblock %}
