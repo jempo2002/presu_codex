@@ -1,0 +1,22 @@
+{% extends 'layout_base.html' %}
+{% block body %}
+<form class="fregistro" method="POST">
+    <legend>Nueva contraseña</legend>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul id="flash-messages">
+            {% for category, message in messages %}
+                <li class="flash-message flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div>
+        <input class="campo" type="password" name="nueva" placeholder="Nueva contraseña" required>
+        <input class="campo" type="password" name="confirma" placeholder="Confirma tu contraseña" required>
+    </div>
+    <div class="boton">
+        <input class="botonr" type="submit" value="Guardar">
+    </div>
+</form>
+{% endblock %}
