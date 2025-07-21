@@ -1,0 +1,21 @@
+{% extends 'layout_base.html' %}
+{% block body %}
+<form class="fregistro" method="POST" action="{{ url_for('autenticacion.restablecer_contrasena') }}">
+    <legend>Crear contraseña</legend>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul id="flash-messages">
+            {% for category, message in messages %}
+                <li class="flash-message flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div>
+        <input class="campo" type="email" name="correo" placeholder="Ingresa el correo asociado a tu cuenta" required>
+    </div>
+    <div class="boton">
+        <input class="botonr" type="submit" value="Enviar enlace">
+    </div>
+</form>
+{% endblock %}

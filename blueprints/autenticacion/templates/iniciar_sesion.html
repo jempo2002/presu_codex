@@ -1,30 +1,23 @@
 <!-- Registro usuario -->
- 
-    
 {% extends 'layout_base.html' %}
-     {% block body%}
-        <form class="fregistro" method="POST" action="{{ url_for('autenticacion.login') }}">
-            
-                <legend>iniciar seccion</legend>
-               
-
-    {% with messages = get_flashed_messages()%}
-
+{% block body%}
+    <form class="fregistro" method="POST" action="{{ url_for('autenticacion.login') }}">
+        <legend>iniciar seccion</legend>
+        {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <br/>
                 {% for messages in messages %}
                 <strong class="alerta">{{messages}}</strong>
                 {% endfor %}
             {%endif%}
-
-    {% endwith %}
-              
-                <div> 
-                   <input class="campo" type="email" name="corrCliente" placeholder="Correo" required>
-                    <input class="campo" type="password" name="contrasena" placeholder="contraseña" required>
-                </div>
-                <div class="boton">
-                      <input class="botonr" type="submit" value="iniciar Seccion">
-                </div>
-         </form>
-     {%endblock %}
+        {% endwith %}
+        <div>
+            <input class="campo" type="email" name="corrCliente" placeholder="Correo" required>
+            <input class="campo" type="password" name="contrasena" placeholder="contraseña" required>
+        </div>
+        <div class="boton">
+            <input class="botonr" type="submit" value="iniciar Seccion">
+        </div>
+        <p><a href="{{ url_for('autenticacion.restablecer_contrasena') }}">¿Olvidaste tu contraseña?</a></p>
+    </form>
+{%endblock %}
