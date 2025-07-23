@@ -1,0 +1,29 @@
+ {%extends "layout_configuracion.html" %}
+{% block sesion %}
+ <form id="seccion-aui" class="fregistro" style="visibility:hidden;display:none;" action="{{ url_for('aiu.aiu') }}" method="POST">
+               <legend>Administración Imprevistos Utilidad (A.I.U)</legend>
+               {% with messages = get_flashed_messages(with_categories=true) %}
+               {% if messages %}
+               <ul id="flash-messages2">
+                    {% for category, message in messages %}
+                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+               </ul>
+               {% endif %}
+               {% endwith %}
+               <section class="contenido">
+                    {% for id, label, type, placeholder, valor in [
+                         ('administracion', 'Gastos Mensual Administración', 'text', 'Sume Todos los Gastos de Administración Mensual', current_user.gastos),
+                         ('imprevistos', 'Porcentaje Mensual para Imprevistos ', 'number', 'Calcule los Gastos de Imprevistos por Mes', current_user.imprevistos),
+                         ('utilidad', 'Porcentaje Utilidad', 'text', 'Cuánto es su utilidad en %', current_user.utilidad)
+                    ] %}
+                    <div class="div_datos_Empresa">
+                         <label>{{ label }}</label>
+                         <input id="{{ id }}" type="{{ type }}" class="campo2" placeholder="{{ placeholder }}" value="{{ valor }}" name="{{ id }}">
+                    </div>
+                    {% endfor %}
+               </section>
+               <button class="botonr" type="submit" name="update_aiu">Guardar Cambios</button>
+          </form>
+{% endblock %}
+

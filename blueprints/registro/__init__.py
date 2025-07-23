@@ -1,4 +1,4 @@
 # Blueprint de registro
 from flask import Blueprint
-registro_bp = Blueprint('registro', __name__, template_folder='templates')
+registro_bp = Blueprint('registro', __name__, template_folder='templates', static_folder='static')
 from . import routes

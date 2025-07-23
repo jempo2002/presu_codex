@@ -15,9 +15,9 @@ class Usuario(db.Model):
         return False
 
     def get_id(self):
-        return str(self.id)
+        return str(self.id_usuario)
     __tablename__ = 'usuarios'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
     correo = db.Column(db.String(25), nullable=False, index=True)
     contrasena = db.Column(db.String(102), nullable=False)
     nombre = db.Column(db.String(50), nullable=False)
@@ -26,7 +26,7 @@ class Usuario(db.Model):
     nit = db.Column(db.Integer, nullable=True, index=True)
     logo = db.Column(db.String(50), nullable=False)
     telefono_representante =db.Column(db.String(10), nullable=False)
-    direcion = db.Column(db.String(50), nullable=False)
+    direccion = db.Column(db.String(50), nullable=False)
     departamento = db.Column(db.String(20), nullable=True)
     ciudad = db.Column(db.String(20), nullable=True)
     gastos = db.Column(db.Integer, nullable=False)

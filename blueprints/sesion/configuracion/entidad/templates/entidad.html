@@ -34,7 +34,7 @@
                           <div class="div_datos_Empresa">
                               <label for="departamento_empresa">Departamento</label>
                               <select class="campo2" id="departamento_empresa" type="text" name="departamento_empresa" placeholder="Seleccione una ciudad o municipio" required autocomplete="off">
-                              <option disabled selected>Seleccione un departamento</option>
+                              <option value="" selected></option>
                               <option value="Amazonas">Amazonas</option>
                               <option value="Antioquia">Antioquia</option>
                               <option value="Arauca">Arauca</option>
@@ -71,23 +71,18 @@
                          </div>
                          <div class="div_datos_Empresa">
                               <label for="ciudad-Empresa">Ciudad</label>
-                              <select class="campo2" id="ciudad_empresa" name="ciudadEmpresa" required>
+                              <select class="campo2" id="ciudad_empresa" name="ciudad_empresa" required>
                                    <option disabled selected>Seleccione una ciudad</option>
                               </select>
                          <div>
                </section>
                <button class="botonr" type="submit" name="update_empresa">Guardar Cambios</button>
           </form>
-          <!--seccion aiu-->
-          
+          <script>
+            const departamentoUsuario = "{{ current_user.departamento }}";
+            const ciudadUsuario = "{{ current_user.ciudad if current_user.ciudad is defined else '' }}";
+            const urlGetMunicipios = "{{ url_for('sesion.get_municipios') }}";
+          </script>
+          <script src="{{ url_for('entidad.static', filename='js/entidad.js') }}"></script>
 
-     <script>
-         // Pasar datos de mano de obra del backend al frontend
-         // Datos fijos ahora están directamente en el HTML
-     </script>
-     <script src="../static/js/salarios.js"></script>
-     <script src="../static/js/implementos.js"></script>
-     <script src="../static/js/factores-combinaciones.js"></script>
-     <script src="../static/js/factores-compatibilidad.js"></script>
-     <script src="../static/js/config-salario-CargaP.js"></script>
 {% endblock %}

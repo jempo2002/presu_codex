@@ -35,12 +35,16 @@ from blueprints.nosotros import nosotros_bp
 from blueprints.sesion.configuracion.entidad import entidad_bp
 from blueprints.sesion import sesion_bp
 from blueprints.sesion.configuracion import configuracion_bp
-app.register_blueprint(registro_bp)
+from blueprints.sesion.configuracion.aiu import aiu_bp
+
 app.register_blueprint(autenticacion_bp)
 app.register_blueprint(nosotros_bp)
-app.register_blueprint(entidad_bp)
-app.register_blueprint(sesion_bp)
-app.register_blueprint(configuracion_bp)
+app.register_blueprint(registro_bp, url_prefix='/registro')
+app.register_blueprint(sesion_bp, url_prefix='/sesion')
+app.register_blueprint(configuracion_bp, url_prefix='/configuracion')
+app.register_blueprint(entidad_bp, url_prefix='/configuracion/empresa')
+app.register_blueprint(aiu_bp, url_prefix='/configuracion/aiu')
+
 
 # Ruta principal
 @app.route('/')

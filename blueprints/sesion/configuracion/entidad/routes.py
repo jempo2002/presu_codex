@@ -2,21 +2,20 @@
 from . import entidad_bp
 from flask_login import login_required, current_user
 from models import db
-from models.modelo_usuario import Modelo_usuario
 from flask import render_template, request, redirect, url_for, flash
 from models.usuario import Usuario
 
-@entidad_bp.route('/entidad', methods=['GET', 'POST'])
+@entidad_bp.route('/', methods=['GET', 'POST'])
 @login_required
 def entidad():
     print("Accediendo a la entidad")
     if request.method == 'POST':
         form = request.form
-        user = Usuario.query.get(current_user.id)
+        user = Usuario.query.get(current_user.id_usuario)
         user.nombre = form.get('nombre_empresa','')
         user.direccion = form.get('direccion', '')
-        user.departamento = form.get('departamento', '')
-        user.ciudad = form.get('ciudad', '')
+        user.departamento = form.get('departamento_empresa', '')
+        user.ciudad = form.get('ciudad_empresa', '')
         user.telefono_empresa = form.get('celular_empresa', '')
         user.nit = form.get('nit', '')
         user.nombre_representante = form.get('nombre_representante', '')
@@ -35,7 +34,7 @@ def entidad():
         print(f"Logo: {user.logo}")
 
         empresa_existe = Usuario.query.filter(Usuario.nit == user.nit).first()
-        if empresa_existe and empresa_existe.id != user.id:
+        if empresa_existe and empresa_existe.id_usuario != user.id_usuario:
             flash("El NIT ya está registrado para otro usuario, no pueden registrarse dos empresas con el mismo NIT", 'error')
             return redirect(url_for('entidad.entidad'))
         else:

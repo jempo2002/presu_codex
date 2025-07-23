@@ -15,14 +15,17 @@
           {% endif %}
           {% endwith %}
                 <div> 
+                    <label for="nombreUsuario">Nombre Empresa o Usuario:</label>
                     <input id="nombreUsuario" class="campo" type="text" name="nomCliente" placeholder="Nombre Empresa o Usuario" required> 
+                    <label for="correoUsuario">Correo:</label>
                     <input id="correoUsuario"class="campo" type="email" name="corrCliente" placeholder="Correo" required>
+                    <label for="contraseñaUsuario">Contraseña:</label>
                     <input id="contraseñaUsuario"class="campo" type="password" name="contrasena" placeholder="contraseña" required>
                     <input id= "form-registro" class="botonr" type="submit" value="Registrar">
     
                 <p id="error_registro" class="errorFormulario"></p>
          </form>
-         <script src = "static/js/registro.js"></script>
+         <script src="{{ url_for('registro.static', filename='js/registro.js') }}"></script>
     
       {% endblock %}
 

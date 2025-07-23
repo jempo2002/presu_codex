@@ -1,6 +1,5 @@
 
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user
 from models.usuario import Usuario
 from werkzeug.security import generate_password_hash
 from models import db
@@ -8,8 +7,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from . import registro_bp
 
 
-# Registro usuario usando SQLAlchemy
-@registro_bp.route('/registro', methods=['GET', 'POST'])
+ # Registro usuario usando SQLAlchemy
+@registro_bp.route('/', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
         nombre = request.form['nomCliente']
@@ -26,13 +25,12 @@ def registro():
                 correo=correo,
                 contrasena=generate_password_hash(contrasena, method='scrypt'),
                 nombre=nombre,
-                apellido="",
-                celular="",
-                nombre_empresa="",
+                telefono_empresa="",
+                nombre_representante="",
                 nit=None,
                 logo="",
-                telefono_empresa="",
-                direcion_empresa="",
+                telefono_representante="",
+                direccion="",
                 departamento="",
                 ciudad="",
                 gastos=0,

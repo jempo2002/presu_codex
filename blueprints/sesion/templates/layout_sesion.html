@@ -5,11 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block titulo%}{%endblock%}</title>
-    <link rel="preload" href="styles/estilos.css" as="style">
-    <link rel="stylesheet" href={{ url_for('static', filename='css/estilos.css')}}>
-    <link rel="stylesheet" href={{ url_for('static', filename='css/normalize.css')}}>
-    
-    
+
+
 </head>
 <body>
     <header>
@@ -38,17 +35,6 @@
     
     @copy: Cesar Bravo 2025  Todos los derechos reservados
 </footer>
-{#
-    <script>
-    // esta es la lista de equipos de alquiler que se genera desde el python
-    var lista2H = {{ equipos|tojson }};
-    var lista2 = {{ materiales|tojson }};
-    var lista2M = {{ obrero|tojson }};
-    console.log("Equipos:", lista2H);
-    console.log("Materiales:", lista2);
-    console.log("Obrero:", lista2M);
-</script>
-#}
-<script src="{{ url_for('static', filename='js/departamentos.js') }}"></script>
+<script src="{{ url_for('sesion.static', filename='js/departamentos.js') }}"></script>
 </body>
 </html>
