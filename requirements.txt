@@ -2,4 +2,4 @@ Flask
 Flask-SQLAlchemy
 Flask-Login
 PyMySQL
-Flask-Mail
+
