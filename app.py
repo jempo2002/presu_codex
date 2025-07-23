@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config import configuracion
 from models import db
 from flask_login import LoginManager
+from flask_mail import Mail
 
 # Inicializar la aplicación Flask
 app = Flask(__name__)
@@ -14,6 +15,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{app.config['MYSQL_USE
 # Desactivar la modificación de seguimiento de SQLAlchemy
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+# Inicializar Mail
+mail = Mail(app)
 
 
 # Inicializar LoginManager

@@ -24,6 +24,9 @@ def login():
         if user and user.contrasena and user.contrasena != "":
             from werkzeug.security import check_password_hash
             if check_password_hash(user.contrasena, contrasena):
+                if not user.activo:
+                    flash('Debes activar tu cuenta mediante el enlace enviado a tu correo', 'error')
+                    return render_template('iniciar_sesion.html')
                 login_user(user)
                 return redirect(url_for('entidad.entidad'))
             else:

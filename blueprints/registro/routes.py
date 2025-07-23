@@ -1,6 +1,7 @@
 
-from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user
+from flask import render_template, redirect, url_for, flash, request, current_app
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Message
 from models.usuario import Usuario
 from werkzeug.security import generate_password_hash
 from models import db
@@ -44,11 +45,21 @@ def registro():
                 imprevistos=0,
                 incapacidad=0,
                 dotaciones=0,
-                utlilidad=0
+                utlilidad=0,
+                activo=False
             )
             db.session.add(nuevo_usuario)
             db.session.commit()
-            flash("Registro exitoso. Ahora puedes iniciar sesión.", 'success')
+            serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+            token = serializer.dumps(correo, salt='email-confirm')
+            enlace = url_for('registro.confirmar_email', token=token, _external=True)
+            msg = Message('Confirma tu cuenta', recipients=[correo])
+            msg.body = f'Confirma tu cuenta visitando: {enlace}'
+            mail = current_app.extensions.get('mail')
+            if mail:
+                mail.send(msg)
+            print(f"Enlace de confirmación para {correo}: {enlace}")
+            flash('Registro exitoso. Revisa tu correo para activar la cuenta.', 'success')
             return redirect(url_for('autenticacion.iniciar_sesion'))
         except SQLAlchemyError as e:
             db.session.rollback()
@@ -56,3 +67,25 @@ def registro():
             return render_template('registro.html')
     # Si es GET, mostrar el formulario
     return render_template('registro.html')
+
+
+@registro_bp.route('/confirmar/<token>')
+def confirmar_email(token):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    try:
+        correo = serializer.loads(token, salt='email-confirm', max_age=3600)
+    except Exception:
+        flash('El enlace no es válido o ha expirado', 'error')
+        return redirect(url_for('registro.registro'))
+
+    usuario = Usuario.query.filter_by(correo=correo).first()
+    if usuario:
+        if not usuario.activo:
+            usuario.activo = True
+            db.session.commit()
+            flash('Cuenta activada correctamente', 'success')
+        else:
+            flash('Cuenta ya activada', 'info')
+    else:
+        flash('Usuario no encontrado', 'error')
+    return redirect(url_for('autenticacion.iniciar_sesion'))

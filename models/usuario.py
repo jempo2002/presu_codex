@@ -8,7 +8,7 @@ class Usuario(db.Model):
 
     @property
     def is_active(self):
-        return True
+        return self.activo
 
     @property
     def is_anonymous(self):
@@ -29,6 +29,7 @@ class Usuario(db.Model):
     direcion = db.Column(db.String(50), nullable=False)
     departamento = db.Column(db.String(20), nullable=True)
     ciudad = db.Column(db.String(20), nullable=True)
+    activo = db.Column(db.Boolean, default=False)
     gastos = db.Column(db.Integer, nullable=False)
     imprevistos = db.Column(db.Integer, nullable=False)
     incapacidad = db.Column(db.Integer, nullable=False)
