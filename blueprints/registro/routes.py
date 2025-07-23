@@ -15,6 +15,11 @@ def registro():
         nombre = request.form['nomCliente']
         correo = request.form['corrCliente']
         contrasena = request.form['contrasena']
+        confirmar = request.form.get('confirmar_contrasena')
+
+        if contrasena != confirmar:
+            flash("Las contraseñas no coinciden", 'error')
+            return render_template('registro.html')
 
         # Verificar que el cliente no esté registrado
         existente = Usuario.query.filter_by(correo=correo).first()
