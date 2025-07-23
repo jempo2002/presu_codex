@@ -1,11 +1,14 @@
 
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user
+from itsdangerous import URLSafeTimedSerializer
 from models.usuario import Usuario
 from werkzeug.security import generate_password_hash
 from models import db
 from sqlalchemy.exc import SQLAlchemyError
 from . import registro_bp
+
+serializer = URLSafeTimedSerializer('MIXTER**34')
 
 
 # Registro usuario usando SQLAlchemy
@@ -15,6 +18,11 @@ def registro():
         nombre = request.form['nomCliente']
         correo = request.form['corrCliente']
         contrasena = request.form['contrasena']
+        confirmar = request.form.get('confirmar_contrasena')
+
+        if contrasena != confirmar:
+            flash("Las contraseñas no coinciden", 'error')
+            return render_template('registro.html')
 
         # Verificar que el cliente no esté registrado
         existente = Usuario.query.filter_by(correo=correo).first()
@@ -25,6 +33,7 @@ def registro():
             nuevo_usuario = Usuario(
                 correo=correo,
                 contrasena=generate_password_hash(contrasena, method='scrypt'),
+                confirmado=False,
                 nombre=nombre,
                 apellido="",
                 celular="",
@@ -43,7 +52,11 @@ def registro():
             )
             db.session.add(nuevo_usuario)
             db.session.commit()
-            flash("Registro exitoso. Ahora puedes iniciar sesión.", 'success')
+
+            token = serializer.dumps(correo, salt='email-confirm')
+            enlace = url_for('registro.confirmar_correo', token=token, _external=True)
+            print(f"Enlace de confirmación para {correo}: {enlace}")
+            flash('Te enviamos un enlace de confirmación a tu correo.', 'success')
             return redirect(url_for('autenticacion.iniciar_sesion'))
         except SQLAlchemyError as e:
             db.session.rollback()
@@ -51,3 +64,22 @@ def registro():
             return render_template('registro.html')
     # Si es GET, mostrar el formulario
     return render_template('registro.html')
+
+
+@registro_bp.route('/confirmar/<token>')
+def confirmar_correo(token):
+    try:
+        correo = serializer.loads(token, salt='email-confirm', max_age=3600)
+    except Exception:
+        flash('El enlace no es válido o ha expirado', 'error')
+        return redirect(url_for('registro.registro'))
+
+    usuario = Usuario.query.filter_by(correo=correo).first()
+    if usuario:
+        usuario.confirmado = True
+        db.session.commit()
+        flash('Correo confirmado correctamente, ya puedes iniciar sesión', 'success')
+        return redirect(url_for('autenticacion.iniciar_sesion'))
+    else:
+        flash('Usuario no encontrado', 'error')
+        return redirect(url_for('registro.registro'))

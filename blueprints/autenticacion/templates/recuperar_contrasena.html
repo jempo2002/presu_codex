@@ -1,7 +1,7 @@
 {% extends 'layout_base.html' %}
 {% block body %}
-<form class="fregistro" method="POST" action="{{ url_for('autenticacion.restablecer_contrasena') }}">
-    <legend>Crear contraseña</legend>
+<form class="fregistro" method="POST" action="{{ url_for('autenticacion.recuperar_contrasena') }}">
+    <legend>Recuperar contraseña</legend>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul id="flash-messages">

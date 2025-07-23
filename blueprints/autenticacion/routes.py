@@ -22,12 +22,15 @@ def login():
         contrasena = request.form['contrasena']
         user = Usuario.query.filter_by(correo=correo).first()
         if user and user.contrasena and user.contrasena != "":
-            from werkzeug.security import check_password_hash
-            if check_password_hash(user.contrasena, contrasena):
-                login_user(user)
-                return redirect(url_for('entidad.entidad'))
+            if not user.confirmado:
+                flash('Debes confirmar tu correo antes de iniciar sesión', 'error')
             else:
-                flash("Contraseña Incorrecta")
+                from werkzeug.security import check_password_hash
+                if check_password_hash(user.contrasena, contrasena):
+                    login_user(user)
+                    return redirect(url_for('entidad.entidad'))
+                else:
+                    flash("Contraseña Incorrecta")
         else:
             flash("Usuario no Existe")
         return render_template('iniciar_sesion.html')
@@ -41,28 +44,28 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@autenticacion_bp.route('/restablecer_contrasena', methods=['GET', 'POST'])
-def restablecer_contrasena():
+@autenticacion_bp.route('/recuperar_contrasena', methods=['GET', 'POST'])
+def recuperar_contrasena():
     if request.method == 'POST':
         correo = request.form['correo']
         usuario = Usuario.query.filter_by(correo=correo).first()
         if usuario:
             token = serializer.dumps(correo, salt='password-reset')
-            enlace = url_for('autenticacion.crear_contrasena', token=token, _external=True)
+            enlace = url_for('autenticacion.nueva_contrasena', token=token, _external=True)
             print(f"Enlace de restablecimiento para {correo}: {enlace}")
             flash('Se ha enviado un enlace a tu correo.', 'success')
         else:
             flash('Correo no encontrado', 'error')
-    return render_template('restablecer_contrasena.html')
+    return render_template('recuperar_contrasena.html')
 
 
-@autenticacion_bp.route('/crear_contrasena/<token>', methods=['GET', 'POST'])
-def crear_contrasena(token):
+@autenticacion_bp.route('/nueva_contrasena/<token>', methods=['GET', 'POST'])
+def nueva_contrasena(token):
     try:
         correo = serializer.loads(token, salt='password-reset', max_age=3600)
     except Exception:
         flash('El enlace no es válido o ha expirado', 'error')
-        return redirect(url_for('autenticacion.restablecer_contrasena'))
+        return redirect(url_for('autenticacion.recuperar_contrasena'))
 
     if request.method == 'POST':
         nueva = request.form['nueva']
@@ -76,4 +79,4 @@ def crear_contrasena(token):
                 db.session.commit()
                 flash('Contraseña actualizada', 'success')
                 return redirect(url_for('autenticacion.iniciar_sesion'))
-    return render_template('crear_contrasena.html')
+    return render_template('nueva_contrasena.html')

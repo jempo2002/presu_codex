@@ -8,7 +8,7 @@ class Usuario(db.Model):
 
     @property
     def is_active(self):
-        return True
+        return self.confirmado
 
     @property
     def is_anonymous(self):
@@ -20,6 +20,7 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     correo = db.Column(db.String(25), nullable=False, index=True)
     contrasena = db.Column(db.String(102), nullable=False)
+    confirmado = db.Column(db.Boolean, default=False)
     nombre = db.Column(db.String(50), nullable=False)
     telefono_empresa = db.Column(db.String(10), nullable=False)
     nombre_representante=db.Column(db.String(50), nullable=False)
