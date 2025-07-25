@@ -33,4 +33,4 @@ class Usuario(db.Model):
     imprevistos = db.Column(db.Integer, nullable=False)
     incapacidad = db.Column(db.Integer, nullable=False)
     dotaciones = db.Column(db.Integer, nullable=False)
-    utlilidad = db.Column(db.Integer, nullable=False)
+    utilidad = db.Column(db.Integer, nullable=False)

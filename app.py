@@ -36,6 +36,7 @@ from blueprints.sesion.configuracion.entidad import entidad_bp
 from blueprints.sesion import sesion_bp
 from blueprints.sesion.configuracion import configuracion_bp
 from blueprints.sesion.configuracion.aiu import aiu_bp
+from blueprints.sesion.configuracion.sueldos import sueldo_bp
 
 app.register_blueprint(autenticacion_bp)
 app.register_blueprint(nosotros_bp)
@@ -44,6 +45,7 @@ app.register_blueprint(sesion_bp, url_prefix='/sesion')
 app.register_blueprint(configuracion_bp, url_prefix='/configuracion')
 app.register_blueprint(entidad_bp, url_prefix='/configuracion/empresa')
 app.register_blueprint(aiu_bp, url_prefix='/configuracion/aiu')
+app.register_blueprint(sueldo_bp, url_prefix='/configuracion/sueldos')
 
 
 # Ruta principal

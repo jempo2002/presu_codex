@@ -12,15 +12,14 @@ def aiu():
     
     if request.method == 'POST':
         form = request.form
+        user = Usuario.query.get(current_user.id_usuario)
+        user.gastos = form.get('administracion', '')
+        user.imprevistos = form.get('imprevistos', '')
+        user.utilidad = form.get('utilidad', '')
+        db.session.add(user)
+        db.session.commit()
+        flash('Actualización realizada correctamente', 'success')
 
-        if 'update_aiu' in form:
-            user = Usuario.query.get(current_user.id_usuario)
-            user.gastos = form.get('administracion', '')
-            user.imprevistos = form.get('imprevistos', '')
-            user.utilidad = form.get('utilidad', '')
-            db.session.commit()
-            flash('Actualización realizada correctamente', 'success')
-
-            return redirect(url_for('aiu.aiu'))
+        return redirect(url_for('aiu.aiu'))
 
     return render_template('aiu.html')
