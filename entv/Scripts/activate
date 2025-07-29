@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Cesar Bravo\Documents\GitHub\presucostov2\entv"
+VIRTUAL_ENV="C:\xampp\htdocs\presucostov2\entv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

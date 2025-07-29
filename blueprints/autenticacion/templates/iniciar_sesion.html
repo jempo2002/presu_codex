@@ -1,30 +1,40 @@
-<!-- Registro usuario -->
- 
-    
 {% extends 'layout_base.html' %}
-     {% block body%}
-        <form class="fregistro" method="POST" action="{{ url_for('autenticacion.login') }}">
-            
-                <legend>iniciar seccion</legend>
-               
+{% block body %}
+<div class="form-page">
+  <div class="form-wrapper">
+    <div class="form-content">
+      <div class="form-header">
+        <h1 class="main-title">Gestiona tus Presupuestos</h1>
+        <h1 class="main-title-secondary">de Forma Inteligente</h1>
+        <p class="main-subtitle">Una plataforma moderna y eficiente para el control total de tus finanzas empresariales</p>
+      </div>
 
-    {% with messages = get_flashed_messages()%}
+      <div class="form-form-container">
+        <form class="form-form" method="POST" action="{{ url_for('autenticacion.login') }}">
+          <h2 class="form-title">Iniciar Sesión</h2>
 
+          {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <br/>
-                {% for messages in messages %}
-                <strong class="alerta">{{messages}}</strong>
+              <div class="alert-container">
+                {% for message in messages %}
+                  <div class="alert">{{ message }}</div>
                 {% endfor %}
-            {%endif%}
+              </div>
+            {% endif %}
+          {% endwith %}
 
-    {% endwith %}
-              
-                <div> 
-                   <input class="campo" type="email" name="corrCliente" placeholder="Correo" required>
-                    <input class="campo" type="password" name="contrasena" placeholder="contraseña" required>
-                </div>
-                <div class="boton">
-                      <input class="botonr" type="submit" value="iniciar Seccion">
-                </div>
-         </form>
-     {%endblock %}
+          <div class="form-group">
+            <input class="form-input" type="email" name="corrCliente" placeholder="Correo electrónico" required>
+          </div>
+          
+          <div class="form-group">
+            <input class="form-input" type="password" name="contrasena" placeholder="Contraseña" required>
+          </div>
+
+          <button class="form-button" type="submit">Iniciar Sesión</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

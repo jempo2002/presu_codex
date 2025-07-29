@@ -1,43 +1,49 @@
-
 {% extends 'layout_base.html' %}
-     {% block body%}
-  
 
-      <div class="contenedor-parrafo1">
-      <p class="parrafoinicio2">Ahorra tiempo! insumos, herramientas y mano de obra,  en un solo click</P>
-      <p class="parrafoinicio3">Genera tus presupuestos de obra en unos cuantos minutos.</P>
-      <div class="contenedorinicio"></div>
+{% block body %}
+
+<div class="contenedor">
+  <div class="banner-verde">
+  <p class="parrafoinicio2">Ahorra tiempo! insumos, herramientas y mano de obra, en un solo click</p>
+  <p class="parrafoinicio3">Genera tus presupuestos de obra en unos cuantos minutos.</p>
+</div>
+<div class="contenedor-grid">
+  <div class="cuadro cuadro-materiales">
+    <div class="cuadro-contenido">
+      <div>
+        <h3>Materiales e Insumos</h3>
+        <p>Crea y accede a muchos materiales e insumos ya registrados</p>
       </div>
-      <div class = "scroll">
-      <div id ="cuadro1" class="cuadritos " >
-         <div class="incuadritos">
-             <h3 class="h2cuadritos">Materiales e Insumos</h3>
-             <img src="../static/img/tool5_122845.svg"  alt="Materialese insumos">
-             <p class="pcuadritos">cree y acceda a muchos materiales e insumos ya registrados</p>
-         </div>
+    </div>
+  </div>
+
+  <div class="cuadro cuadro-mano-obra">
+    <div class="cuadro-contenido">
+      <div>
+        <h3>Mano de Obra</h3>
+        <p>Administra el costo de mano de obra</p>
       </div>
-      
-      <div class="cuadritos"> 
-         <div class="incuadritos">
-            <h3 class="h2caudritos"> Mano de Obra </h3>
-            <img src="../static/img/trabajador.svg"  style="width:30%;" alt="trabajador construccion">
-            <P class="pcuadritos">Administre el costo de mano de obra</P>
-          </div>
+    </div>
+  </div>
+
+  <div class="cuadro cuadro-alquileres">
+    <div class="cuadro-contenido">
+      <div>
+        <h3>Alquileres y Equipos</h3>
+        <p>Crea nuevos alquileres o accede a los ya registrados</p>
       </div>
-      <div class="cuadritos">
-        <div class="incuadritos">
-          <h3 class="h2caudritos">Alquileres y Equipos</h3>
-          <img src="../static/img/carro.svg" alt="volqueta" style="width:50%;">
-          <P class="pcuadritos">cree nuevos alquileres o acceda a los ya registrados</P>
-        </div>
+    </div>
+  </div>
+
+  <div class="cuadro cuadro-analisis">
+    <div class="cuadro-contenido">
+      <div>
+        <h3>Análisis y Costos</h3>
+        <p>Genera su presupuesto en PDF listo para entregarlo a su cliente</p>
       </div>
-      <div class="cuadritos">
-        <div class="incuadritos">
-          <h3 class="h2caudritos">Analisis y costos</h3>
-          <img src="../static/img/data_analysis_data_icon_182941.svg" style="width:30%;" alt="">
-          <P class="pcuadritos">Genere su presupuesto en PDF Listo para entregarle a su cliente</P> 
-        </div>
-      </div>
-      </div>
-     </section>
-      {% endblock %}
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
