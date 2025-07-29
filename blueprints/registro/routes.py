@@ -37,7 +37,7 @@ def registro():
                 imprevistos=0,
                 incapacidad=0,
                 dotaciones=0,
-                utlilidad=0
+                utilidad=0
             )
             db.session.add(nuevo_usuario)
             db.session.commit()

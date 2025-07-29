@@ -1,7 +1,7 @@
   {% extends "layout_configuracion.html" %}
   {% block sesion %}
   
-  <form id="seccion-prestaciones" class="" style="visibility:hidden;display:none;" action="empresa?tab=prestaciones" method="POST">
+  <form id="seccion-prestaciones" class=""  action="" method="POST">
                <legend>Calculadora de Prestaciones Sociales 2025</legend>
                {% with messages = get_flashed_messages(with_categories=true) %}
                {% if messages %}
@@ -12,20 +12,31 @@
                </ul>
                {% endif %}
                {% endwith %}               
-               <!-- Configuración de valores base -->
+               <!-- salario minimo y auxilio de trasporte -->
                <section class="contenido">
                     <div class="config-valores-base">
                          <h4>Valores Base</h4>
-                         <div class="div_datos_Empresa">
-                              <label for="salario-minimo">Salario Mínimo Legal Vigente <span class="admin-only">🔒</span></label>
-<input id="salario-minimo" type="text" class="campo2 readonly-field" value="{{ '{:,}'.format(salario_minimo) if salario_minimo is not none else '' }}" name="salario_minimo"
-       readonly title="Solo modificable por administrador - Valor establecido según normatividad legal">
-                                     readonly title="Solo modificable por administrador - Valor establecido según normatividad legal">
-                         </div>
-                         <div class="div_datos_Empresa">
-                              <label for="auxilio-transporte">Auxilio de Transporte <span class="admin-only">🔒</span></label>
-<input id="auxilio-transporte" type="text" class="campo2 readonly-field" value="{{ '{:,}'.format(auxilio_transporte) if auxilio_transporte is not none else '' }}" name="auxilio_transporte"
-       readonly title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                         <div class="fila-valores-base">
+                              <div class="div_datos_Empresa">
+                                   <label for="salario-minimo">
+                                        Salario Mínimo Legal Vigente 
+                                        <span class="admin-only" title="Solo modificable por administrador">🔒</span>
+                                   </label>
+                                   <input id="salario-minimo" type="text" class="campo2 readonly-field" 
+                                          value="{{ '{:,}'.format(salario_minimo) if salario_minimo is not none else '' }}" 
+                                          name="salario_minimo" readonly 
+                                          title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="auxilio-transporte">
+                                        Auxilio de Transporte 
+                                        <span class="admin-only" title="Solo modificable por administrador">🔒</span>
+                                   </label>
+                                   <input id="auxilio-transporte" type="text" class="campo2 readonly-field" 
+                                          value="{{ '{:,}'.format(auxilio_transporte) if auxilio_transporte is not none else '' }}" 
+                                          name="auxilio_transporte" readonly 
+                                          title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                              </div>
                          </div>
                     </div>
                </section>
@@ -37,7 +48,7 @@
                          <table id="tabla-prestaciones" class="tabla-prestaciones">
                               <thead>
                                    <tr>
-                                        <th>Tipo de Personal</th>
+                                        <th>Tipo de profesion</th>
                                         <th>Factor <span class="editable-field">✏️</span></th>
                                         <th>Salario Base <span class="editable-field">✏️</span></th>
                                         <th>Aux. Transporte</th>
@@ -1005,15 +1016,9 @@
                </section>
                
           </form>
+<script src="{{ url_for('sueldo.static', filename='js/salarios.js') }}"></script>
 
 {% endblock %}
 {% block scripts %}
-          <script src="{{ url_for('static', filename='js/salarios.js') }}"></script>
-          <script>
-               // Inicializar los factores de prestaciones sociales
-               document.addEventListener('DOMContentLoaded', function() {
-                    calcularPrestaciones();
-                    calcularEspecialidades();
-               });
-          </script>
+              
 {% endblock %}

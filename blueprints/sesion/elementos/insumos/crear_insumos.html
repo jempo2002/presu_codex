@@ -1,0 +1,134 @@
+  <!-- CREAR INSUMOS -->
+         <form id="crear_insumo" class="fregistro"  action="/seccion/crear_insumo" method="POST">
+            <div>
+            <legend>Crear Nuevo Insumo</legend>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+               {% if messages %}
+               <ul id="flash-messages">
+                    {% for category, message in messages %}
+                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+               </ul>
+               {% endif %}
+               {% endwith %}
+               <!--insumos-->
+            <div class="campo_de_busqueda_NuevoInsumo">
+            <input id="crearInsumo" class="campo" type="text" name="nomInsumo" placeholder="Nombre Insumo" required autocomplete="off">
+           
+            <table id="sugerenciasCrearNinsumo" class ="caja_de_resultados">
+               {% for materiales in materiales %}
+               <tr class =""><td class = "materiales">{{materiales[1]}} </td><td>{{materiales[3]}} </td><td>{{materiales[5]}} </td></tr>
+               {% endfor %}
+               </table>
+            </div>
+            <div class="campo_de_busqueda_marca">
+               <input id="marca" class="campo" type="text" name="marca" placeholder="Marca-Generico" required autocomplete="off">
+               <table id="sugerenciasmarca" class ="caja_de_resultados" style="margin: -7px 554px;">
+                  {% for marcas in marcas %}
+                  <tr class =""><td class = "materiales">{{marcas[1]}}</td></tr>
+                  {% endfor %}
+                  </table>
+               </div>
+           
+            <select class="campo" name="tipInsumo" required>
+               <option disabled selected>Categoria de Insumo</option>
+               <option>MEZCLAS Y MORTEROS</option>
+               <option>GENERALES</option>
+               <option>ADITIVOS</option>
+               <option>PETREOS</option>
+               <option>MADERAS FORMALETA</option>
+               <option>ACERO REFUERZO Y ESTRUCTURAL</option>
+               <option>MAPOSTERIA</option>
+               <option>CUBIERTAS</option>
+               <option>DRIWALL</option>
+               <option>ACABADOS</option>
+               <option>ENCHAPES</option>
+               <option>CERRAJERIA</option>
+               <option>CARPINTERIA</option>
+               <option>APARATOS Y MUEBLES FIJOS</option>
+               <option>MOBILIARIO</option>
+               <option>SISTEMAS HIDAULICO</option>
+               <option>GRIFERIA</option>
+               <option>SISTEMAS HIDAULICO AGUA CALIENTE</option>
+               <option>SISTEMAS GAS</option>
+               <option>SISTEMAS ELECTRICOS</option>
+               <option>SISTEMAS AIRE ACONDICIONADO</option>
+               <option>OTROS</option>
+            </select>
+            <select class="campo" name="unMedidaInsumo" required>
+               <option disabled selected>Unidad de Medida</option>
+               <option>Unidad</option>
+               <option>M3</option>
+               <option>Promedio</option>
+               <option>Litro</option>
+               <option>KG</option>
+               <option>ML</option>
+               <option>M2</option>
+               <option>cuerpo</option>
+               <option>Milimetro</option>
+               <option>Galon</option>
+               <option>Rollo</option>
+               <option>Libra</option>
+               <option>Gramo</option>
+               <option>punto</option>
+               <option>Mes</option>
+               <option>Otros</option>
+            </select>
+           
+            <div class="campo_de_busqueda_proveedor" style="display:inline">
+               <p id="alertproveedor" style="display:none"></p>
+               <input id="proveedor" class="campo" type="text" name="proveedor" placeholder="Proveedor" required autocomplete="off">
+               <table id="sugerenciaProveedor" class="caja_de_resultados">
+                   {% for proveedores in proveedores %}
+                   <tr class=""><td class="materiales">{{ proveedores[1] }}</td></tr>
+                   {% endfor %}
+               </table>
+           </div>
+            <select class="campo" id="ciudad-input" type="text" name="departamento" placeholder="Seleccione una ciudad o municipio" required autocomplete="off">
+               <option disabled selected>Seleccione un departamento</option>
+               <option value="Amazonas">Amazonas</option>
+               <option value="Antioquia">Antioquia</option>
+               <option value="Arauca">Arauca</option>
+               <option value="Atlántico">Atlántico</option>
+               <option value="Bolívar">Bolívar</option>
+               <option value="Boyacá">Boyacá</option>
+               <option value="Caldas">Caldas</option>
+               <option value="Caquetá">Caquetá</option>
+               <option value="Casanare">Casanare</option>
+               <option value="Cauca">Cauca</option>
+               <option value="Cesar">Cesar</option>
+               <option value="Chocó">Chocó</option>
+               <option value="Córdoba">Córdoba</option>
+               <option value="Cundinamarca">Cundinamarca</option>
+               <option value="Guainía">Guainía</option>
+               <option value="Guaviare">Guaviare</option>
+               <option value="Huila">Huila</option>
+               <option value="La Guajira">La Guajira</option>
+               <option value="Magdalena">Magdalena</option>
+               <option value="Meta">Meta</option>
+               <option value="Nariño">Nariño</option>
+               <option value="Norte de Santander">Norte de Santander</option>
+               <option value="Putumayo">Putumayo</option>
+               <option value="Quindío">Quindío</option>
+               <option value="Risaralda">Risaralda</option>
+               <option value="San Andrés y Providencia">San Andrés y Providencia</option>
+               <option value="Santander">Santander</option>
+               <option value="Sucre">Sucre</option>
+               <option value="Tolima">Tolima</option>
+               <option value="Valle del cauca">Valle del cauca</option>
+               <option value="Vaupés">Vaupés</option>
+               <option value="Vichada">Vichada</option>
+            </select>
+            <select class="campo" id="ciudad-filtrada" name="ciudad" required>
+                <option disabled selected>Seleccione una ciudad</option>
+            </select>
+            <input id="embalajeInsumo"class="campo" type="float" name="embInsumo" placeholder="Embalaje Insumo" required>
+            <input id="valorInsumoNeto"class="campo" style="width:22%"type="number" name="valorneto" placeholder="Valor" required>
+            <input id="valorInsumoUnidad" class="campo" style="width:22%" type="number" name="valorInsumo" placeholder="Valor unidad" step="0.01" required>
+            <input class="campo" type="text" name="url" placeholder="Ingrese una url para mantener su insumo Actualizado" autocomplete="off">
+            <input class="botonr" type="submit" value="Crear Nuevo Insumo">
+         </div>
+            <div>
+            <button id="openModalBtn" class="btn" style="display:none">Crear Nuevo Proveedor</button>
+           </div>
+         </form>

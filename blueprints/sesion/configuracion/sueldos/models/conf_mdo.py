@@ -1,7 +1,7 @@
 # Modelos de secciones
 
 
-class ConfiguracionMDO:
+class ConfMDO:
     def __init__(self):
         self.smlv = 1423500
         self.aux_transporte = 200000
@@ -33,4 +33,4 @@ class ConfiguracionMDO:
         }
 
 # Instancia global para usar en las rutas
-configuracion_mdo = ConfiguracionMDO()
+conf_mdo = ConfMDO()
