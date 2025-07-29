@@ -1,31 +1,40 @@
 <!-- registro de usuario -->
  <!-- falta implementar registro con redes e incorporar enlace de ya registrado -->
      {% extends 'layout_base.html' %}
+     {% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formularios.css') }}">
+{% endblock %}
      {% block body%}
-         <form id="registro" class="fregistro"  action="{{ url_for('registro.registro') }}" method="POST">
-            
-                <legend>Registrese</legend>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-               <ul id="flash-messages">
-               {% for category, message in messages %}
-                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
-               {% endfor %}
-               </ul>
-          {% endif %}
+<div class="form-page">
+  <div class="form-wrapper">
+    <div class="form-content">
+        <div class="form-header">
+        <h1 class="main-title">Gestiona tus Presupuestos</h1>
+        <h1 class="main-title-secondary">de Forma Inteligente</h1>
+        <p class="main-subtitle">Una plataforma moderna y eficiente para el control total de tus finanzas empresariales</p>
+      </div>
+      <div class="form-form-container">
+        <form id="registro" class="form-form" action="{{ url_for('registro.registro') }}" method="POST">
+          <legend class="form-title">Regístrese</legend>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="alert-container">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
           {% endwith %}
                 <div> 
-                    <label for="nombreUsuario">Nombre Empresa o Usuario:</label>
                     <input id="nombreUsuario" class="campo" type="text" name="nomCliente" placeholder="Nombre Empresa o Usuario" required> 
-                    <label for="correoUsuario">Correo:</label>
                     <input id="correoUsuario"class="campo" type="email" name="corrCliente" placeholder="Correo" required>
-                    <label for="contraseñaUsuario">Contraseña:</label>
                     <input id="contraseñaUsuario"class="campo" type="password" name="contrasena" placeholder="contraseña" required>
                     <input id= "form-registro" class="botonr" type="submit" value="Registrar">
     
                 <p id="error_registro" class="errorFormulario"></p>
          </form>
-         <script src="{{ url_for('registro.static', filename='js/registro.js') }}"></script>
+         <script src = "static/js/registro.js"></script>
     
       {% endblock %}
 

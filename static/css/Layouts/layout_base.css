@@ -1,0 +1,176 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Martel Sans', sans-serif;
+    background-color: #ffffff;
+    padding-bottom: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #ffffff;
+    padding: 15px 40px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+/* Logo */
+.logo-arriba {
+    background-color: #FF6B35;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    display: inline-block;
+}
+
+#logo {
+    text-decoration: none;
+}
+
+/* Navegación */
+.navinicio ul {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.navainicio {
+    text-decoration: none;
+    color: white;
+    background-color: #4A90E2;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    display: inline-block;
+}
+
+.navainicio:hover {
+    background-color: #357ABD;
+}
+
+/* Ajuste para el contenido */
+.seccion-Principal {
+    margin-top: 70px;
+    background-color: #ffffff;
+}
+
+/* Footer fijado abajo */
+.footer-inicio {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    position: fixed;
+    bottom: 0px; 
+    left: 0;
+    width: 100%;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+}
+
+.nav-footer ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-inicio p {
+    text-align: center;
+    margin-top: 10px;
+    color: #666;
+}
+
+.footer-inicio .nav-footer img {
+    width: 32px !important;
+    height: 32px !important;
+    object-fit: contain;
+}
+#menu-hamburguesa {
+    display: none;
+    margin-left: auto;
+    /* Asegura que esté alineado a la derecha en desktop */
+    position: relative;
+}
+
+@media (max-width: 480px) {
+  .footer-inicio .nav-footer img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-header{
+    margin-top: 68px;
+  }
+  #menu-hamburguesa {
+    display: block;
+    margin-left: auto;
+    position: relative; /* Mantén relative para que respete el flex del header */
+    right: 0;
+    top: 0;
+    z-index: 1100;
+    }
+  .navinicio ul {
+    display: none;
+    flex-direction: column;
+    align-items: stretch; /* Cambia a stretch */
+    gap: 16px; /* Un poco más de espacio */
+    padding: 24px 16px 24px 16px; /* Padding lateral */
+    margin: 0;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-radius: 0 0 16px 16px;
+    width: 100vw;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .navinicio ul.menu-visible {
+    display: flex;
+    animation: slideDown 0.3s;
+  }
+
+  .navainicio {
+    width: 100%; /* Ocupa todo el ancho */
+    margin: 0;
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+    padding: 16px 0; /* Padding uniforme */
+    border-radius: 8px;
+  }
+
+  /* Oculta el botón hamburguesa por defecto */
+
+}

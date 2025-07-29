@@ -1,6 +1,6 @@
 __pycache__/
 *.pyc
-.env
+.entv
 venv/
 instance/
 .DS_Store
