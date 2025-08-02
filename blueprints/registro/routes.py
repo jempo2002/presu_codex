@@ -1,4 +1,3 @@
-
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user
 from models.usuario import Usuario
@@ -26,20 +25,19 @@ def registro():
                 correo=correo,
                 contrasena=generate_password_hash(contrasena, method='scrypt'),
                 nombre=nombre,
-                apellido="",
-                celular="",
-                nombre_empresa="",
+                telefono_empresa="",
+                nombre_representante="",
                 nit=None,
                 logo="",
-                telefono_empresa="",
-                direcion_empresa="",
+                telefono_representante="",
+                direccion="",
                 departamento="",
                 ciudad="",
                 gastos=0,
                 imprevistos=0,
                 incapacidad=0,
                 dotaciones=0,
-                utlilidad=0
+                utilidad=0
             )
             db.session.add(nuevo_usuario)
             db.session.commit()
