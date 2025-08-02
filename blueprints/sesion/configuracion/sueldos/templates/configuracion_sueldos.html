@@ -1,0 +1,1024 @@
+  {% extends "layout_configuracion.html" %}
+  {% block sesion %}
+  
+  <form id="seccion-prestaciones" class=""  action="" method="POST">
+               <legend>Calculadora de Prestaciones Sociales 2025</legend>
+               {% with messages = get_flashed_messages(with_categories=true) %}
+               {% if messages %}
+               <ul id="flash-messages3">
+                    {% for category, message in messages %}
+                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+               </ul>
+               {% endif %}
+               {% endwith %}               
+               <!-- salario minimo y auxilio de trasporte -->
+               <section class="contenido">
+                    <div class="config-valores-base">
+                         <h4>Valores Base</h4>
+                         <div class="fila-valores-base">
+                              <div class="div_datos_Empresa">
+                                   <label for="salario-minimo">
+                                        Salario Mínimo Legal Vigente 
+                                        <span class="admin-only" title="Solo modificable por administrador">🔒</span>
+                                   </label>
+                                   <input id="salario-minimo" type="text" class="campo2 readonly-field" 
+                                          value="{{ '{:,}'.format(salario_minimo) if salario_minimo is not none else '' }}" 
+                                          name="salario_minimo" readonly 
+                                          title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="auxilio-transporte">
+                                        Auxilio de Transporte 
+                                        <span class="admin-only" title="Solo modificable por administrador">🔒</span>
+                                   </label>
+                                   <input id="auxilio-transporte" type="text" class="campo2 readonly-field" 
+                                          value="{{ '{:,}'.format(auxilio_transporte) if auxilio_transporte is not none else '' }}" 
+                                          name="auxilio_transporte" readonly 
+                                          title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                              </div>
+                         </div>
+                    </div>
+               </section>
+
+               <!-- Tabla de prestaciones por tipo de personal -->
+               <section class="contenido">
+                    <h4>Prestaciones Sociales por Tipo de Personal</h4>
+                    <div class="tabla-prestaciones-container">
+                         <table id="tabla-prestaciones" class="tabla-prestaciones">
+                              <thead>
+                                   <tr>
+                                        <th>Tipo de profesion</th>
+                                        <th>Factor <span class="editable-field">✏️</span></th>
+                                        <th>Salario Base <span class="editable-field">✏️</span></th>
+                                        <th>Aux. Transporte</th>
+                                        <th>Cesantías</th>
+                                        <th>Int. Cesantías</th>
+                                        <th>Prima</th>
+                                        <th>Vacaciones</th>
+                                        <th>EPS</th>
+                                        <th>ARL</th>
+                                        <th>Pensión</th>
+                                        <th>SENA</th>
+                                        <th>Caja Comp.</th>
+                                        <th>ICBF</th>
+                                        <th>Dotación</th>
+                                        <th>Incapacidad</th>
+                                        <th>Días T. No Labor.</th>
+                                        <th>Horas Extras</th>
+                                        <th>Factor Prest.</th>
+                                        <th>Total</th>
+                                        <th>Costo/Día</th>
+                                        <th>Costo/Hora</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <!-- Fila de información de porcentajes -->
+                                   <tr class="fila-porcentajes-info">
+                                        <td><strong>% APLICADO</strong></td>
+                                        <td>-</td>
+                                        <td>Base</td>
+                                        <td>Fijo</td>
+                                        <td>8.33%</td>
+                                        <td>12%</td>
+                                        <td>8.33%</td>
+                                        <td>4.166667%</td>
+                                        <td>8.5%</td>
+                                        <td>6.96%</td>
+                                        <td>12%</td>
+                                        <td>2%</td>
+                                        <td>4%</td>
+                                        <td>3%</td>
+                                        <td>5%</td>
+                                        <td>1%</td>
+                                        <td>26.67%</td>
+                                        <td>2%</td>
+                                        <td>Calc.</td>
+                                        <td>Suma</td>
+                                        <td>÷30</td>
+                                        <td>÷8</td>
+                                   </tr>
+                                   
+                                   <!-- Tipos de personal fijos -->
+                                   <tr data-tipo="ayudante" data-id="1">
+                                        <td><strong>AYUDANTE</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="1.423.500" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$118.625</td>
+                                        <td class="int-cesantias">$14.235</td>
+                                        <td class="prima">$118.625</td>
+                                        <td class="vacaciones">$59.312</td>
+                                        <td class="eps">$120.998</td>
+                                        <td class="arl">$99.076</td>
+                                        <td class="pension">$170.820</td>
+                                        <td class="sena">$28.470</td>
+                                        <td class="caja-comp">$56.940</td>
+                                        <td class="icbf">$42.705</td>
+                                        <td class="dotacion">$71.175</td>
+                                        <td class="incapacidad">$14.235</td>
+                                        <td class="tiempo-no-laborado">$379.647</td>
+                                        <td class="horas-extras">$28.470</td>
+                                        <td class="factor-prest">1.64</td>
+                                        <td class="total">$2.946.833</td>
+                                        <td class="costo-dia">$98.228</td>
+                                        <td class="costo-hora">$12.279</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="oficial" data-id="2">
+                                        <td><strong>OFICIAL</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.135.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$177.937</td>
+                                        <td class="int-cesantias">$21.352</td>
+                                        <td class="prima">$177.937</td>
+                                        <td class="vacaciones">$88.969</td>
+                                        <td class="eps">$181.496</td>
+                                        <td class="arl">$148.613</td>
+                                        <td class="pension">$256.230</td>
+                                        <td class="sena">$42.705</td>
+                                        <td class="caja-comp">$85.410</td>
+                                        <td class="icbf">$64.058</td>
+                                        <td class="dotacion">$106.763</td>
+                                        <td class="incapacidad">$21.353</td>
+                                        <td class="tiempo-no-laborado">$569.471</td>
+                                        <td class="horas-extras">$42.705</td>
+                                        <td class="factor-prest">2.46</td>
+                                        <td class="total">$4.320.249</td>
+                                        <td class="costo-dia">$144.008</td>
+                                        <td class="costo-hora">$18.001</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="maestro-de-obra" data-id="3">
+                                        <td><strong>MAESTRO DE OBRA</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.847.000" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$237.250</td>
+                                        <td class="int-cesantias">$28.470</td>
+                                        <td class="prima">$237.250</td>
+                                        <td class="vacaciones">$118.625</td>
+                                        <td class="eps">$241.995</td>
+                                        <td class="arl">$198.151</td>
+                                        <td class="pension">$341.640</td>
+                                        <td class="sena">$56.940</td>
+                                        <td class="caja-comp">$113.880</td>
+                                        <td class="icbf">$85.410</td>
+                                        <td class="dotacion">$142.350</td>
+                                        <td class="incapacidad">$28.470</td>
+                                        <td class="tiempo-no-laborado">$759.295</td>
+                                        <td class="horas-extras">$56.940</td>
+                                        <td class="factor-prest">3.29</td>
+                                        <td class="total">$5.693.666</td>
+                                        <td class="costo-dia">$189.789</td>
+                                        <td class="costo-hora">$23.724</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="residente-de-obra-arq-ing" data-id="4">
+                                        <td><strong>RESIDENTE DE OBRA ARQ/ING</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="3.558.750" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$296.562</td>
+                                        <td class="int-cesantias">$35.587</td>
+                                        <td class="prima">$296.562</td>
+                                        <td class="vacaciones">$148.281</td>
+                                        <td class="eps">$302.494</td>
+                                        <td class="arl">$247.689</td>
+                                        <td class="pension">$427.050</td>
+                                        <td class="sena">$71.175</td>
+                                        <td class="caja-comp">$142.350</td>
+                                        <td class="icbf">$106.763</td>
+                                        <td class="dotacion">$177.938</td>
+                                        <td class="incapacidad">$35.588</td>
+                                        <td class="tiempo-no-laborado">$949.119</td>
+                                        <td class="horas-extras">$71.175</td>
+                                        <td class="factor-prest">4.11</td>
+                                        <td class="total">$6.867.083</td>
+                                        <td class="costo-dia">$228.903</td>
+                                        <td class="costo-hora">$28.613</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="arquitecto-proyectista" data-id="5">
+                                        <td><strong>ARQUITECTO PROYECTISTA</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="3.558.750" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$296.562</td>
+                                        <td class="int-cesantias">$35.587</td>
+                                        <td class="prima">$296.562</td>
+                                        <td class="vacaciones">$148.281</td>
+                                        <td class="eps">$302.494</td>
+                                        <td class="arl">$247.689</td>
+                                        <td class="pension">$427.050</td>
+                                        <td class="sena">$71.175</td>
+                                        <td class="caja-comp">$142.350</td>
+                                        <td class="icbf">$106.763</td>
+                                        <td class="dotacion">$177.938</td>
+                                        <td class="incapacidad">$35.588</td>
+                                        <td class="tiempo-no-laborado">$949.119</td>
+                                        <td class="horas-extras">$71.175</td>
+                                        <td class="factor-prest">4.11</td>
+                                        <td class="total">$6.867.083</td>
+                                        <td class="costo-dia">$228.903</td>
+                                        <td class="costo-hora">$28.613</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="arquitecto-director-de-proyectos" data-id="6">
+                                        <td><strong>ARQUITECTO DIRECTOR DE PROYECTOS</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="3.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="4.982.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$415.187</td>
+                                        <td class="int-cesantias">$49.822</td>
+                                        <td class="prima">$415.187</td>
+                                        <td class="vacaciones">$207.594</td>
+                                        <td class="eps">$423.491</td>
+                                        <td class="arl">$346.765</td>
+                                        <td class="pension">$597.870</td>
+                                        <td class="sena">$99.645</td>
+                                        <td class="caja-comp">$199.290</td>
+                                        <td class="icbf">$149.468</td>
+                                        <td class="dotacion">$249.113</td>
+                                        <td class="incapacidad">$49.823</td>
+                                        <td class="tiempo-no-laborado">$1.328.766</td>
+                                        <td class="horas-extras">$99.645</td>
+                                        <td class="factor-prest">5.75</td>
+                                        <td class="total">$9.613.916</td>
+                                        <td class="costo-dia">$320.464</td>
+                                        <td class="costo-hora">$40.058</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="cadenero" data-id="7">
+                                        <td><strong>CADENERO</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.135.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$177.937</td>
+                                        <td class="int-cesantias">$21.352</td>
+                                        <td class="prima">$177.937</td>
+                                        <td class="vacaciones">$88.969</td>
+                                        <td class="eps">$181.496</td>
+                                        <td class="arl">$148.613</td>
+                                        <td class="pension">$256.230</td>
+                                        <td class="sena">$42.705</td>
+                                        <td class="caja-comp">$85.410</td>
+                                        <td class="icbf">$64.058</td>
+                                        <td class="dotacion">$106.763</td>
+                                        <td class="incapacidad">$21.353</td>
+                                        <td class="tiempo-no-laborado">$569.471</td>
+                                        <td class="horas-extras">$42.705</td>
+                                        <td class="factor-prest">2.46</td>
+                                        <td class="total">$4.320.249</td>
+                                        <td class="costo-dia">$144.008</td>
+                                        <td class="costo-hora">$18.001</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="topografo" data-id="8">
+                                        <td><strong>TOPÓGRAFO</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="3" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="4.270.500" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$355.875</td>
+                                        <td class="int-cesantias">$42.705</td>
+                                        <td class="prima">$355.875</td>
+                                        <td class="vacaciones">$177.937</td>
+                                        <td class="eps">$362.993</td>
+                                        <td class="arl">$297.227</td>
+                                        <td class="pension">$512.460</td>
+                                        <td class="sena">$85.410</td>
+                                        <td class="caja-comp">$170.820</td>
+                                        <td class="icbf">$128.115</td>
+                                        <td class="dotacion">$213.525</td>
+                                        <td class="incapacidad">$42.705</td>
+                                        <td class="tiempo-no-laborado">$1.138.942</td>
+                                        <td class="horas-extras">$85.410</td>
+                                        <td class="factor-prest">4.93</td>
+                                        <td class="total">$8.240.499</td>
+                                        <td class="costo-dia">$274.683</td>
+                                        <td class="costo-hora">$34.335</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="auxiliar-residente" data-id="9">
+                                        <td><strong>AUXILIAR RESIDENTE</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="3.558.750" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$296.562</td>
+                                        <td class="int-cesantias">$35.587</td>
+                                        <td class="prima">$296.562</td>
+                                        <td class="vacaciones">$148.281</td>
+                                        <td class="eps">$302.494</td>
+                                        <td class="arl">$247.689</td>
+                                        <td class="pension">$427.050</td>
+                                        <td class="sena">$71.175</td>
+                                        <td class="caja-comp">$142.350</td>
+                                        <td class="icbf">$106.763</td>
+                                        <td class="dotacion">$177.938</td>
+                                        <td class="incapacidad">$35.588</td>
+                                        <td class="tiempo-no-laborado">$949.119</td>
+                                        <td class="horas-extras">$71.175</td>
+                                        <td class="factor-prest">4.11</td>
+                                        <td class="total">$6.867.083</td>
+                                        <td class="costo-dia">$228.903</td>
+                                        <td class="costo-hora">$28.613</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="supervisor-sst" data-id="10">
+                                        <td><strong>SUPERVISOR SST</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.847.000" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$237.250</td>
+                                        <td class="int-cesantias">$28.470</td>
+                                        <td class="prima">$237.250</td>
+                                        <td class="vacaciones">$118.625</td>
+                                        <td class="eps">$241.995</td>
+                                        <td class="arl">$198.151</td>
+                                        <td class="pension">$341.640</td>
+                                        <td class="sena">$56.940</td>
+                                        <td class="caja-comp">$113.880</td>
+                                        <td class="icbf">$85.410</td>
+                                        <td class="dotacion">$142.350</td>
+                                        <td class="incapacidad">$28.470</td>
+                                        <td class="tiempo-no-laborado">$759.295</td>
+                                        <td class="horas-extras">$56.940</td>
+                                        <td class="factor-prest">3.29</td>
+                                        <td class="total">$5.693.666</td>
+                                        <td class="costo-dia">$189.789</td>
+                                        <td class="costo-hora">$23.724</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="almacenista" data-id="11">
+                                        <td><strong>ALMACENISTA</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.135.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$177.937</td>
+                                        <td class="int-cesantias">$21.352</td>
+                                        <td class="prima">$177.937</td>
+                                        <td class="vacaciones">$88.969</td>
+                                        <td class="eps">$181.496</td>
+                                        <td class="arl">$148.613</td>
+                                        <td class="pension">$256.230</td>
+                                        <td class="sena">$42.705</td>
+                                        <td class="caja-comp">$85.410</td>
+                                        <td class="icbf">$64.058</td>
+                                        <td class="dotacion">$106.763</td>
+                                        <td class="incapacidad">$21.353</td>
+                                        <td class="tiempo-no-laborado">$569.471</td>
+                                        <td class="horas-extras">$42.705</td>
+                                        <td class="factor-prest">2.46</td>
+                                        <td class="total">$4.320.249</td>
+                                        <td class="costo-dia">$144.008</td>
+                                        <td class="costo-hora">$18.001</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="celador" data-id="12">
+                                        <td><strong>CELADOR</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.2" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="1.708.200" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$142.350</td>
+                                        <td class="int-cesantias">$17.082</td>
+                                        <td class="prima">$142.350</td>
+                                        <td class="vacaciones">$71.175</td>
+                                        <td class="eps">$145.197</td>
+                                        <td class="arl">$118.891</td>
+                                        <td class="pension">$204.984</td>
+                                        <td class="sena">$34.164</td>
+                                        <td class="caja-comp">$68.328</td>
+                                        <td class="icbf">$51.246</td>
+                                        <td class="dotacion">$85.410</td>
+                                        <td class="incapacidad">$17.082</td>
+                                        <td class="tiempo-no-laborado">$455.557</td>
+                                        <td class="horas-extras">$34.164</td>
+                                        <td class="factor-prest">1.97</td>
+                                        <td class="total">$3.701.565</td>
+                                        <td class="costo-dia">$123.386</td>
+                                        <td class="costo-hora">$15.423</td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+               </section>
+
+               <!-- Configuración de porcentajes -->
+               <section class="contenido">
+                    <h4>Configuración de Aportes Parafiscales (%)</h4>
+                    <div class="config-porcentajes">
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-cesantias">Cesantías (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-cesantias" type="number" class="campo2 readonly-field" value="8.33" step="0.01" name="porc_cesantias" readonly title="Solo modificable por administrador - Calculado: 1 salario al año ÷ 12 meses">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-int-cesantias">Int. Cesantías (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-int-cesantias" type="number" class="campo2 readonly-field" value="12" step="0.01" name="porc_int_cesantias" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-prima">Prima (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-prima" type="number" class="campo2 readonly-field" value="8.33" step="0.01" name="porc_prima" readonly title="Solo modificable por administrador - Calculado: 1 salario al año ÷ 12 meses">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-vacaciones">Vacaciones (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-vacaciones" type="number" class="campo2 readonly-field" value="4.166667" step="0.01" name="porc_vacaciones" readonly title="Solo modificable por administrador - Calculado: 0.5 salarios al año ÷ 12 meses">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-eps">EPS (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-eps" type="number" class="campo2 readonly-field" value="8.5" step="0.01" name="porc_eps" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-arl">ARL (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-arl" type="number" class="campo2 readonly-field" value="6.96" step="0.01" name="porc_arl" readonly title="Solo modificable por administrador">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-pension">Pensión (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-pension" type="number" class="campo2 readonly-field" value="12" step="0.01" name="porc_pension" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-sena">SENA (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-sena" type="number" class="campo2 readonly-field" value="2" step="0.01" name="porc_sena" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-caja-comp">Caja Comp. (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-caja-comp" type="number" class="campo2 readonly-field" value="4" step="0.01" name="porc_caja_comp" readonly title="Solo modificable por administrador">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-icbf">ICBF (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-icbf" type="number" class="campo2 readonly-field" value="3" step="0.01" name="porc_icbf" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-dotacion">Dotación (%) <span class="editable-field">✏️</span></label>
+                                   <input id="porc-dotacion" type="number" class="campo2 editable-field" value="5" step="0.01" name="porc_dotacion" onchange="calcularPrestaciones()" title="Campo editable por el usuario">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-incapacidad">Incapacidad (%) <span class="editable-field">✏️</span></label>
+                                   <input id="porc-incapacidad" type="number" class="campo2 editable-field" value="1" step="0.01" name="porc_incapacidad" onchange="calcularPrestaciones()" title="Campo editable por el usuario">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-tiempo-no-laborado">Días T. No Labor. (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-tiempo-no-laborado" type="number" class="campo2 readonly-field" value="26.67" step="0.01" name="porc_tiempo_no_laborado" readonly title="Solo modificable por administrador - Días tiempo no laborado">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-horas-extras">Horas Extras (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-horas-extras" type="number" class="campo2 readonly-field" value="2" step="0.01" name="porc_horas_extras" readonly title="Solo modificable por administrador - Horas extras">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <!-- Espacio vacío para mantener la estructura -->
+                              </div>
+                         </div>
+                    </div>
+               </section>
+
+               <!-- Factores de Incremento por Especialidad -->
+               <section class="contenido grid-container">
+                    <h4>Factores de Incremento por Especialidad y Cuadrillas</h4>
+                    
+                    <!-- Grid de especialidades -->
+                    <div class="especialidades-grid">
+                         
+                         <!-- =============== BÁSICO =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">BÁSICO</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-basico" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-basico" class="factor-input-grid" data-especialidad="basico" value="1.0" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="basico" data-tipo="oficial">$3.687.700</td>
+                                             <td class="sueldo-diario" data-especialidad="basico" data-tipo="oficial">$122.923</td>
+                                             <td class="sueldo-hora" data-especialidad="basico" data-tipo="oficial">$15.365</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="basico" data-tipo="ayudante">$2.538.717</td>
+                                             <td class="sueldo-diario" data-especialidad="basico" data-tipo="ayudante">$84.624</td>
+                                             <td class="sueldo-hora" data-especialidad="basico" data-tipo="ayudante">$10.578</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="basico" data-config="1-1">$207.547</td>
+                                             <td class="cuadrilla-valor" data-especialidad="basico" data-config="1-1">$207.547</td>
+                                             <td class="cuadrilla-hora" data-especialidad="basico" data-config="1-1">$25.943</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="basico" data-config="1-2">$292.171</td>
+                                             <td class="cuadrilla-valor" data-especialidad="basico" data-config="1-2">$292.171</td>
+                                             <td class="cuadrilla-hora" data-especialidad="basico" data-config="1-2">$36.521</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="basico" data-config="1-3">$376.795</td>
+                                             <td class="cuadrilla-valor" data-especialidad="basico" data-config="1-3">$376.795</td>
+                                             <td class="cuadrilla-hora" data-especialidad="basico" data-config="1-3">$47.099</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== ALBAÑILERÍA =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">ALBAÑILERÍA</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-albanileria" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-albanileria" class="factor-input-grid" data-especialidad="albanileria" value="1.6" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="albanileria" data-tipo="oficial">$3.687.700</td>
+                                             <td class="sueldo-diario" data-especialidad="albanileria" data-tipo="oficial">$122.923</td>
+                                             <td class="sueldo-hora" data-especialidad="albanileria" data-tipo="oficial">$15.365</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="albanileria" data-tipo="ayudante">$2.538.717</td>
+                                             <td class="sueldo-diario" data-especialidad="albanileria" data-tipo="ayudante">$84.624</td>
+                                             <td class="sueldo-hora" data-especialidad="albanileria" data-tipo="ayudante">$10.578</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="albanileria" data-config="1-1">$207.547</td>
+                                             <td class="cuadrilla-valor" data-especialidad="albanileria" data-config="1-1">$207.547</td>
+                                             <td class="cuadrilla-hora" data-especialidad="albanileria" data-config="1-1">$25.943</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="albanileria" data-config="1-2">$292.171</td>
+                                             <td class="cuadrilla-valor" data-especialidad="albanileria" data-config="1-2">$292.171</td>
+                                             <td class="cuadrilla-hora" data-especialidad="albanileria" data-config="1-2">$36.521</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="albanileria" data-config="1-3">$376.795</td>
+                                             <td class="cuadrilla-valor" data-especialidad="albanileria" data-config="1-3">$376.795</td>
+                                             <td class="cuadrilla-hora" data-especialidad="albanileria" data-config="1-3">$47.099</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 4 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="albanileria" data-config="1-4">$461.419</td>
+                                             <td class="cuadrilla-valor" data-especialidad="albanileria" data-config="1-4">$461.419</td>
+                                             <td class="cuadrilla-hora" data-especialidad="albanileria" data-config="1-4">$57.677</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 5 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="albanileria" data-config="1-5">$546.043</td>
+                                             <td class="cuadrilla-valor" data-especialidad="albanileria" data-config="1-5">$546.043</td>
+                                             <td class="cuadrilla-hora" data-especialidad="albanileria" data-config="1-5">$68.255</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 6 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="albanileria" data-config="1-6">$630.667</td>
+                                             <td class="cuadrilla-valor" data-especialidad="albanileria" data-config="1-6">$630.667</td>
+                                             <td class="cuadrilla-hora" data-especialidad="albanileria" data-config="1-6">$78.833</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== METÁLICOS =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">METÁLICOS</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-metalicos" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-metalicos" class="factor-input-grid" data-especialidad="metalicos" value="1.8" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="metalicos" data-tipo="oficial">$5.900.320</td>
+                                             <td class="sueldo-diario" data-especialidad="metalicos" data-tipo="oficial">$196.677</td>
+                                             <td class="sueldo-hora" data-especialidad="metalicos" data-tipo="oficial">$24.585</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="metalicos" data-tipo="ayudante">$4.061.947</td>
+                                             <td class="sueldo-diario" data-especialidad="metalicos" data-tipo="ayudante">$135.398</td>
+                                             <td class="sueldo-hora" data-especialidad="metalicos" data-tipo="ayudante">$16.925</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="metalicos" data-config="1-1">$332.075</td>
+                                             <td class="cuadrilla-valor" data-especialidad="metalicos" data-config="1-1">$332.075</td>
+                                             <td class="cuadrilla-hora" data-especialidad="metalicos" data-config="1-1">$41.509</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="metalicos" data-config="1-2">$467.473</td>
+                                             <td class="cuadrilla-valor" data-especialidad="metalicos" data-config="1-2">$467.473</td>
+                                             <td class="cuadrilla-hora" data-especialidad="metalicos" data-config="1-2">$58.434</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="metalicos" data-config="1-3">$602.871</td>
+                                             <td class="cuadrilla-valor" data-especialidad="metalicos" data-config="1-3">$602.871</td>
+                                             <td class="cuadrilla-hora" data-especialidad="metalicos" data-config="1-3">$75.359</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== PLOMERÍA =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">PLOMERÍA</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-plomeria" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-plomeria" class="factor-input-grid" data-especialidad="plomeria" value="1.6" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="plomeria" data-tipo="oficial">$6.637.860</td>
+                                             <td class="sueldo-diario" data-especialidad="plomeria" data-tipo="oficial">$221.262</td>
+                                             <td class="sueldo-hora" data-especialidad="plomeria" data-tipo="oficial">$27.658</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="plomeria" data-tipo="ayudante">$4.569.691</td>
+                                             <td class="sueldo-diario" data-especialidad="plomeria" data-tipo="ayudante">$152.323</td>
+                                             <td class="sueldo-hora" data-especialidad="plomeria" data-tipo="ayudante">$19.040</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="plomeria" data-config="1-1">$373.585</td>
+                                             <td class="cuadrilla-valor" data-especialidad="plomeria" data-config="1-1">$373.585</td>
+                                             <td class="cuadrilla-hora" data-especialidad="plomeria" data-config="1-1">$46.698</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="plomeria" data-config="1-2">$525.908</td>
+                                             <td class="cuadrilla-valor" data-especialidad="plomeria" data-config="1-2">$525.908</td>
+                                             <td class="cuadrilla-hora" data-especialidad="plomeria" data-config="1-2">$65.738</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="plomeria" data-config="1-3">$678.231</td>
+                                             <td class="cuadrilla-valor" data-especialidad="plomeria" data-config="1-3">$678.231</td>
+                                             <td class="cuadrilla-hora" data-especialidad="plomeria" data-config="1-3">$84.779</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== ELECTRICIDAD =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">ELECTRICIDAD</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-electricidad" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-electricidad" class="factor-input-grid" data-especialidad="electricidad" value="1.8" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="electricidad" data-tipo="oficial">$6.269.090</td>
+                                             <td class="sueldo-diario" data-especialidad="electricidad" data-tipo="oficial">$208.969</td>
+                                             <td class="sueldo-hora" data-especialidad="electricidad" data-tipo="oficial">$26.121</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="electricidad" data-tipo="ayudante">$4.315.819</td>
+                                             <td class="sueldo-diario" data-especialidad="electricidad" data-tipo="ayudante">$143.861</td>
+                                             <td class="sueldo-hora" data-especialidad="electricidad" data-tipo="ayudante">$17.983</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="electricidad" data-config="1-1">$352.830</td>
+                                             <td class="cuadrilla-valor" data-especialidad="electricidad" data-config="1-1">$352.830</td>
+                                             <td class="cuadrilla-hora" data-especialidad="electricidad" data-config="1-1">$44.104</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="electricidad" data-config="1-2">$496.691</td>
+                                             <td class="cuadrilla-valor" data-especialidad="electricidad" data-config="1-2">$496.691</td>
+                                             <td class="cuadrilla-hora" data-especialidad="electricidad" data-config="1-2">$62.086</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="electricidad" data-config="1-3">$640.552</td>
+                                             <td class="cuadrilla-valor" data-especialidad="electricidad" data-config="1-3">$640.552</td>
+                                             <td class="cuadrilla-hora" data-especialidad="electricidad" data-config="1-3">$80.069</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== DRYWALL =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">DRYWALL</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-drywall" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-drywall" class="factor-input-grid" data-especialidad="drywall" value="1.7" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="drywall" data-tipo="oficial">$5.162.780</td>
+                                             <td class="sueldo-diario" data-especialidad="drywall" data-tipo="oficial">$172.093</td>
+                                             <td class="sueldo-hora" data-especialidad="drywall" data-tipo="oficial">$21.512</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="drywall" data-tipo="ayudante">$3.554.204</td>
+                                             <td class="sueldo-diario" data-especialidad="drywall" data-tipo="ayudante">$118.473</td>
+                                             <td class="sueldo-hora" data-especialidad="drywall" data-tipo="ayudante">$14.809</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="drywall" data-config="1-1">$290.566</td>
+                                             <td class="cuadrilla-valor" data-especialidad="drywall" data-config="1-1">$290.566</td>
+                                             <td class="cuadrilla-hora" data-especialidad="drywall" data-config="1-1">$36.321</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="drywall" data-config="1-2">$409.039</td>
+                                             <td class="cuadrilla-valor" data-especialidad="drywall" data-config="1-2">$409.039</td>
+                                             <td class="cuadrilla-hora" data-especialidad="drywall" data-config="1-2">$51.130</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="drywall" data-config="1-3">$527.512</td>
+                                             <td class="cuadrilla-valor" data-especialidad="drywall" data-config="1-3">$527.512</td>
+                                             <td class="cuadrilla-hora" data-especialidad="drywall" data-config="1-3">$65.939</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== ACABADOS =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">ACABADOS</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-acabados" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-acabados" class="factor-input-grid" data-especialidad="acabados" value="1.7" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="acabados" data-tipo="oficial">$4.794.010</td>
+                                             <td class="sueldo-diario" data-especialidad="acabados" data-tipo="oficial">$159.800</td>
+                                             <td class="sueldo-hora" data-especialidad="acabados" data-tipo="oficial">$19.975</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="acabados" data-tipo="ayudante">$3.300.332</td>
+                                             <td class="sueldo-diario" data-especialidad="acabados" data-tipo="ayudante">$110.011</td>
+                                             <td class="sueldo-hora" data-especialidad="acabados" data-tipo="ayudante">$13.751</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="acabados" data-config="1-1">$269.811</td>
+                                             <td class="cuadrilla-valor" data-especialidad="acabados" data-config="1-1">$269.811</td>
+                                             <td class="cuadrilla-hora" data-especialidad="acabados" data-config="1-1">$33.726</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="acabados" data-config="1-2">$379.822</td>
+                                             <td class="cuadrilla-valor" data-especialidad="acabados" data-config="1-2">$379.822</td>
+                                             <td class="cuadrilla-hora" data-especialidad="acabados" data-config="1-2">$47.478</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="acabados" data-config="1-3">$489.833</td>
+                                             <td class="cuadrilla-valor" data-especialidad="acabados" data-config="1-3">$489.833</td>
+                                             <td class="cuadrilla-hora" data-especialidad="acabados" data-config="1-3">$61.229</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== MADERA =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">MADERA</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-madera" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-madera" class="factor-input-grid" data-especialidad="madera" value="1.6" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="madera" data-tipo="oficial">$5.531.550</td>
+                                             <td class="sueldo-diario" data-especialidad="madera" data-tipo="oficial">$184.385</td>
+                                             <td class="sueldo-hora" data-especialidad="madera" data-tipo="oficial">$23.048</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="madera" data-tipo="ayudante">$3.808.076</td>
+                                             <td class="sueldo-diario" data-especialidad="madera" data-tipo="ayudante">$126.936</td>
+                                             <td class="sueldo-hora" data-especialidad="madera" data-tipo="ayudante">$15.867</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="madera" data-config="1-1">$311.321</td>
+                                             <td class="cuadrilla-valor" data-especialidad="madera" data-config="1-1">$311.321</td>
+                                             <td class="cuadrilla-hora" data-especialidad="madera" data-config="1-1">$38.915</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="madera" data-config="1-2">$438.257</td>
+                                             <td class="cuadrilla-valor" data-especialidad="madera" data-config="1-2">$438.257</td>
+                                             <td class="cuadrilla-hora" data-especialidad="madera" data-config="1-2">$54.782</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="madera" data-config="1-3">$565.193</td>
+                                             <td class="cuadrilla-valor" data-especialidad="madera" data-config="1-3">$565.193</td>
+                                             <td class="cuadrilla-hora" data-especialidad="madera" data-config="1-3">$70.649</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                         <!-- =============== ASEO GENERAL =============== -->
+                         <div class="especialidad-container">
+                              <div class="especialidad-titulo-grid">ASEO GENERAL</div>
+                              
+                              <!-- Control de factor -->
+                              <div style="margin-bottom: 15px; text-align: center;">
+                                   <label for="factor-aseo" style="font-weight: bold; margin-right: 10px;">Factor de Incremento:</label>
+                                   <input type="number" id="factor-aseo" class="factor-input-grid" data-especialidad="aseo" value="1.5" min="0.5" max="3.0" step="0.1" onchange="calcularEspecialidadGrid(this)">
+                                   <span style="font-style: italic; color: #6c757d; margin-left: 10px; font-size: 11px;">Aplica a Oficial y Ayudante</span>
+                              </div>
+                              
+                              <table class="tabla-especialidad-individual">
+                                   <thead>
+                                        <tr>
+                                             <th>Tipo</th>
+                                             <th>Sueldo Mensual</th>
+                                             <th>Sueldo Diario</th>
+                                             <th>Sueldo Hora</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr class="fila-oficial">
+                                             <td class="tipo-personal">Oficial</td>
+                                             <td class="sueldo-mensual" data-especialidad="aseo" data-tipo="oficial">$3.318.930</td>
+                                             <td class="sueldo-diario" data-especialidad="aseo" data-tipo="oficial">$110.631</td>
+                                             <td class="sueldo-hora" data-especialidad="aseo" data-tipo="oficial">$13.829</td>
+                                        </tr>
+                                        <tr class="fila-ayudante">
+                                             <td class="tipo-personal">Ayudante</td>
+                                             <td class="sueldo-mensual" data-especialidad="aseo" data-tipo="ayudante">$2.284.845</td>
+                                             <td class="sueldo-diario" data-especialidad="aseo" data-tipo="ayudante">$76.162</td>
+                                             <td class="sueldo-hora" data-especialidad="aseo" data-tipo="ayudante">$9.520</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 1 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="aseo" data-config="1-1">$186.793</td>
+                                             <td class="cuadrilla-valor" data-especialidad="aseo" data-config="1-1">$186.793</td>
+                                             <td class="cuadrilla-hora" data-especialidad="aseo" data-config="1-1">$23.349</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 2 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="aseo" data-config="1-2">$262.955</td>
+                                             <td class="cuadrilla-valor" data-especialidad="aseo" data-config="1-2">$262.955</td>
+                                             <td class="cuadrilla-hora" data-especialidad="aseo" data-config="1-2">$32.869</td>
+                                        </tr>
+                                        <tr class="fila-cuadrilla">
+                                             <td class="cuadrilla-config">CUADRILLA - 1 OFI / 3 AUX</td>
+                                             <td class="cuadrilla-sueldo" data-especialidad="aseo" data-config="1-3">$339.117</td>
+                                             <td class="cuadrilla-valor" data-especialidad="aseo" data-config="1-3">$339.117</td>
+                                             <td class="cuadrilla-hora" data-especialidad="aseo" data-config="1-3">$42.390</td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+                         
+                    </div>
+               </section>
+               
+               <!-- Botón para guardar cambios en prestaciones sociales -->
+               <section class="contenido">
+                    <div style="text-align: center; margin-top: 20px;">
+                         <button type="button" id="btn-guardar-prestaciones" class="botonr" onclick="guardarFactoresPrestaciones()">
+                              💾 Guardar Cambios en Prestaciones Sociales
+                         </button>
+                         <div id="mensaje-guardado-prestaciones" style="margin-top: 10px; color: green; font-weight: bold; display: none;">
+                              ✅ Factores y salarios guardados exitosamente
+                         </div>
+                    </div>
+               </section>
+               
+          </form>
+<script src="{{ url_for('sueldo.static', filename='js/salarios.js') }}"></script>
+
+{% endblock %}
+{% block scripts %}
+              
+{% endblock %}

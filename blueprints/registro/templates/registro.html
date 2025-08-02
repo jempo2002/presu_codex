@@ -26,22 +26,15 @@
               </div>
             {% endif %}
           {% endwith %}
-          <div class="form-group">
-            <input id="nombreUsuario" class="form-input" type="text" name="nomCliente" placeholder="Nombre Empresa o Usuario" required>
-          </div>
-          <div class="form-group">
-            <input id="correoUsuario" class="form-input" type="email" name="corrCliente" placeholder="Correo" required>
-          </div>
-          <div class="form-group">
-            <input id="contraseñaUsuario" class="form-input" type="password" name="contrasena" placeholder="Contraseña" required>
-          </div>
-          <input id="form-registro" class="form-button" type="submit" value="Registrar">
-          <p id="error_registro" class="errorFormulario"></p>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+                <div> 
+                    <input id="nombreUsuario" class="campo" type="text" name="nomCliente" placeholder="Nombre Empresa o Usuario" required> 
+                    <input id="correoUsuario"class="campo" type="email" name="corrCliente" placeholder="Correo" required>
+                    <input id="contraseñaUsuario"class="campo" type="password" name="contrasena" placeholder="contraseña" required>
+                    <input id= "form-registro" class="botonr" type="submit" value="Registrar">
+    
+                <p id="error_registro" class="errorFormulario"></p>
+         </form>
+         <script src = "static/js/registro.js"></script>
+    
       {% endblock %}
 
