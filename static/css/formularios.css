@@ -88,7 +88,7 @@
 /* Inputs del formulario */
 .form-input {
   width: 100%;
-  padding: 18px 20px;
+  padding: 12px 20px; /* Reducido de 18px a 12px el padding vertical */
   border: 2px solid #e9ecef;
   border-radius: 12px;
   font-size: 1rem;
@@ -163,12 +163,12 @@
   }
   
   .form-form {
-    padding: 35px 25px;
+    padding: 35px 25px 50px 25px; /* Aumentado padding inferior de 35px a 50px */
   }
   
   .form-input,
   .form-button {
-    padding: 16px;
+    padding: 12px 16px;
   }
 
   .form-content,
@@ -176,8 +176,15 @@
     max-width: 95vw;
     min-width: 0;
   }
-  .form-page{
-    margin-top: -150px
+  
+  .form-page {
+    margin-top: -150px;
+  }
+  
+  /* Asegurar que el botón tenga espacio */
+  .form-button {
+    margin-top: 2rem;
+    margin-bottom: 3rem; /* Espacio adicional debajo del botón */
   }
 }
 
@@ -188,12 +195,12 @@
   }
   
   .form-form {
-    padding: 35px 25px;
+    padding: 35px 25px 60px 25px; /* Aumentado padding inferior a 60px */
   }
   
   .form-input,
   .form-button {
-    padding: 16px;
+    padding: 10px 16px;
   }
 
   .form-content,
@@ -201,7 +208,28 @@
     max-width: 95vw;
     min-width: 0;
   }
-  .form-page{
-    margin-top: -150px
+  
+  .form-page {
+    margin-top: -150px;
+  }
+  
+  /* Más espacio para el botón en móviles pequeños */
+  .form-button {
+    margin-top: 2rem;
+    margin-bottom: 4rem; /* Aún más espacio */
+    width: 100%; /* Que ocupe todo el ancho */
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 320px) {
+  .form-form {
+    padding: 25px 15px 50px 15px; /* Padding inferior generoso */
+  }
+  
+  .form-button {
+    margin-top: 1.5rem;
+    margin-bottom: 3rem;
+    width: 100%;
   }
 }

@@ -1,51 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block titulo%}{%endblock%}</title>
+    <script src="{{ url_for('static', filename='js/scrollreveal.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Layouts/layout_base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilosInicio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formularios.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <style>
 
+        .usuario-nombre {
+    color: #333;
+    background-color: #f8f9fa;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    border: 2px solid #4A90E2;
+}
 
+.cerrar-sesion {
+    background-color: #dc3545 !important;
+}
+
+.cerrar-sesion:hover {
+    background-color: #c82333 !important;
+}
+
+@media (max-width: 768px) {
+    .usuario-nombre {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        box-sizing: border-box;
+        padding: 16px 0;
+        border-radius: 8px;
+    }
+}
+
+/* Ajustar posición del footer */
+.footer-inicio {
+    margin-top: 5vh; /* Aumenta este valor para bajar más el footer */
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 768px) {
+    .footer-inicio {
+        margin-top: 3vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-inicio {
+        margin-top: 2vh;
+    }
+}
+    </style
 </head>
+
 <body>
-    <header>
-    <div class="fondo">
-        <div class="seccion">
-            <div>
-                <nav class="navseccion">
-                    <a class="navaseccion" href="{{ url_for('entidad.entidad') }}">Configuración</a>
-                    <a class="navaseccion" href="#">Crear Implementos</a>
-                    <a class="navaseccion" href="#">Presupuestos</a>
-                    <a class="navaseccion" href="#">Tutoriales</a>
-                 
-                </nav>
+    <div class="layout">
+        <header>
+            <a id="logo" href="#">
+                <h1 class="logo-arriba">PRESUcosto</h1>
+            </a>
+            <!-- Ícono menú hamburguesa -->
+            <button id="menu-hamburguesa" style="background:none; border:none;">
+                <img src="{{ url_for('static', filename='img/menu.png') }}" alt="Menú" style="width:36px; height:36px;">
+            </button>
+            <nav class="navinicio">
+                <ul>
+                    <li><span class="usuario-nombre">{{current_user.nombre}}</span></li>
+                    <li><a class="navainicio" href="{{ url_for('entidad.entidad') }}">Configuración</a></li>
+                    <li><a class="navainicio" href="#">Crear Implementos</a></li>
+                    <li><a class="navainicio" href="#">Presupuestos</a></li>
+                    <li><a class="navainicio" href="#">Tutoriales</a></li>
+                    <li><a class="navainicio cerrar-sesion" href="{{ url_for('autenticacion.logout') }}">Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+        </header>
         
-             <h3 class="cerrarsesion">{{current_user.nombre}}</h3>
-            <a href="{{ url_for('autenticacion.logout') }}" class="cerrar-sesion">Cerrar Sesión</a>
-           </div>
-        </div>
-         <section>
-            {% block body %}
-            {% endblock %}
-         </section>
-     </header>
+        <section class="seccion-Principal">
+            {% block body %}{% endblock %}
+        </section>
+        
+        <footer class="footer-inicio">
+            <nav class="nav-footer">
+                <ul>
+                    <li>
+                        <a href="https://www.instagram.com" target="_blank">
+                            <img src="{{ url_for('static', filename='img/instagram.png') }}" alt="Instagram">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.facebook.com" target="_blank">
+                            <img src="{{ url_for('static', filename='img/facebook.png') }}" alt="Facebook" style="width:45px; height:45px">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com" target="_blank">
+                            <img src="{{ url_for('static', filename='img/youtube.png') }}" alt="YouTube">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com" target="_blank">
+                            <img src="{{ url_for('static', filename='img/github.png') }}" alt="GitHub">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <p>&copy; 2025 Cesar Bravo. Todos los derechos reservados.</p>
+        </footer>
+        
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    </div>
     
-<footer class="footer-seccion">
-    
-    @copy: Cesar Bravo 2025  Todos los derechos reservados
-</footer>
-{#
     <script>
-    // esta es la lista de equipos de alquiler que se genera desde el python
-    var lista2H = {{ equipos|tojson }};
-    var lista2 = {{ materiales|tojson }};
-    var lista2M = {{ obrero|tojson }};
-    console.log("Equipos:", lista2H);
-    console.log("Materiales:", lista2);
-    console.log("Obrero:", lista2M);
-</script>
-#}
-<script src="{{ url_for('static', filename='js/departamentos.js') }}"></script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const navMenu = document.querySelector('.navinicio ul');
+        const menuBtn = document.getElementById('menu-hamburguesa');
+        if (menuBtn && navMenu) {
+          menuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            navMenu.classList.toggle('menu-visible');
+          });
+        }
+      });
+    </script>
+    <script src="{{ url_for('static', filename='js/departamentos.js') }}"></script>
 </body>
 </html>

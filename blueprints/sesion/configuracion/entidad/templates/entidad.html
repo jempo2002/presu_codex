@@ -1,21 +1,18 @@
 {% extends "layout_configuracion.html" %}
 {% block sesion %}
- <div class="bloqueheader">
-     
           <!--seccion empresa-->
-          <form id="seccion-empresa" class="fregistro" action="{{ url_for('entidad.entidad') }}" method="POST" value="empresa">
-               <legend>Datos Empresa</legend>
+          <form id="seccion-empresa" class="form-form" action="{{ url_for('entidad.entidad') }}" method="POST" value="empresa">
+               <h1 class="form-title">Datos Empresa</h1>
                {% with messages = get_flashed_messages(with_categories=true) %}
                {% if messages %}
-               <ul id="flash-messages">
+               <div class="alert-container">
                     {% for category, message in messages %}
-                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
                     {% endfor %}
-               </ul>
+               </div>
                {% endif %}
                {% endwith %}
-               <p class="subparrafo">En esta sección puedes modificar los datos de tu empresa</p>
-               <section class="contenido">
+               <div class="contenido">
                          {% for field, label, type, placeholder, readonly, valor in [
                               ('nombre_empresa', 'Nombre Empresa', 'text', 'Nombre Empresa', False, current_user.nombre),
                               ('nit', 'Nit', 'number', '', False, current_user.nit),
@@ -26,15 +23,15 @@
                               ('logo', 'Logo', 'text', 'Logo Empresa', False, current_user.logo),
                               ('direccion', 'Direccion', 'text', 'Direccion Empresa', False, current_user.direccion)
                          ] %}
-                         <div class="div_datos_Empresa">
+                         <div class="form-group">
                               <label for="{{ field }}">{{ label }}</label>
-                              <input id="{{ field }}" type="{{ type }}" class="campo2" placeholder="{{ placeholder }}" value="{{ valor }}" name="{{ field }}" {% if readonly %}readonly{% endif %}>
+                              <input id="{{ field }}" type="{{ type }}" class="form-input" placeholder="{{ placeholder }}" value="{{ valor }}" name="{{ field }}" {% if readonly %}readonly{% endif %}>
                          </div>
                          {% endfor %}
-                          <div class="div_datos_Empresa">
+                         <div class="form-group">
                               <label for="departamento_empresa">Departamento</label>
-                              <select class="campo2" id="departamento_empresa" type="text" name="departamento_empresa" placeholder="Seleccione una ciudad o municipio" required autocomplete="off">
-                              <option value="" selected></option>
+                              <select class="form-input" id="departamento_empresa" name="departamento_empresa" required>
+                              <option value="" selected>seleccione departamento</option>
                               <option value="Amazonas">Amazonas</option>
                               <option value="Antioquia">Antioquia</option>
                               <option value="Arauca">Arauca</option>
@@ -69,14 +66,14 @@
                               <option value="Vichada">Vichada</option>
                          </select>
                          </div>
-                         <div class="div_datos_Empresa">
-                              <label for="ciudad-Empresa">Ciudad</label>
-                              <select class="campo2" id="ciudad_empresa" name="ciudad_empresa" required>
+                         <div class="form-group">
+                              <label for="ciudad_empresa">Ciudad</label>
+                              <select class="form-input" id="ciudad_empresa" name="ciudad_empresa" required>
                                    <option disabled selected>Seleccione una ciudad</option>
                               </select>
-                         <div>
-               </section>
-               <button class="botonr" type="submit" name="update_empresa">Guardar Cambios</button>
+                         </div>
+               </div>
+               <button class="form-button" type="submit" name="update_empresa">Guardar Cambios</button>
           </form>
           <script>
             const departamentoUsuario = "{{ current_user.departamento }}";

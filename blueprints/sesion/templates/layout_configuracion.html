@@ -1,14 +1,33 @@
 {% extends "layout_sesion.html" %}
 {% block body %}
-<div class="bloqueheader">
-        <nav class="items-apu">
-               <ul>
-               <li><a href="{{ url_for('entidad.entidad') }}">empresa</a></li>
-               <li><a href="{{ url_for('sueldo.sueldos') }}">sueldos</a></li>
-               <li><a href="{{ url_for('aiu.aiu') }}">aiu</a></li>
-               </ul>
-        </nav>
- </div>
-              {% block sesion %}
-              {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/formularios.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Layouts/layout_configuracion.css') }}">
+
+<div class="container-config">
+    <!-- Header con navigation tabs -->
+    <div class="config-header">
+        <div class="section-tabs">
+            <a href="{{ url_for('entidad.entidad') }}" class="section-tab {% if request.endpoint == 'entidad.entidad' %}active{% endif %}">
+                <span class="tab-icon">🏢</span>
+                Empresa
+            </a>
+            <a href="{{ url_for('aiu.aiu') }}" class="section-tab {% if request.endpoint == 'aiu.aiu' %}active{% endif %}">
+                <span class="tab-icon">📊</span>
+                AIU
+            </a>
+            <a href="{{ url_for('sueldo.sueldos') }}" class="section-tab {% if request.endpoint == 'sueldo.sueldos' %}active{% endif %}">
+                <span class="tab-icon">💰</span>
+                Sueldos
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="config-main-content">
+        {% block sesion %}
+        {% endblock %}
+    </div>
+</div>
+
+
 {% endblock %}

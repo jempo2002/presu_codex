@@ -84,7 +84,7 @@ header {
 /* Footer fijado abajo */
 .footer-inicio {
     background-color: #f8f9fa;
-    padding: 20px 0;
+    padding: 8px 0; /* Reducido de 20px a 8px */
     position: fixed;
     bottom: 0px; 
     left: 0;
@@ -96,20 +96,22 @@ header {
     list-style: none;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px; /* Reducido de 15px a 10px */
     margin: 0;
     padding: 0;
 }
 
 .footer-inicio p {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 5px; /* Reducido de 10px a 5px */
+    margin-bottom: 0; /* Añadido para eliminar margen inferior */
     color: #666;
+    font-size: 0.85rem; /* Añadido para hacer el texto más pequeño */
 }
 
 .footer-inicio .nav-footer img {
-    width: 32px !important;
-    height: 32px !important;
+    width: 24px !important; /* Reducido de 32px a 24px */
+    height: 24px !important; /* Reducido de 32px a 24px */
     object-fit: contain;
 }
 #menu-hamburguesa {
@@ -171,6 +173,27 @@ header {
     border-radius: 8px;
   }
 
-  /* Oculta el botón hamburguesa por defecto */
+  /* Ajustes para móviles */
+  body {
+    padding-bottom: 0; /* Eliminar padding del body */
+    overflow-y: auto;
+}
+    
+.footer-inicio {
+    position: relative; /* No fijo en móviles */
+    margin-top: 5vh; /* Más separación */
+    padding: 8px 0;
+}
+}
 
+@media (max-width: 480px) {
+  body {
+    padding-bottom: 0; /* Sin padding en móviles */
+}
+    
+.footer-inicio {
+    position: relative;
+    margin-top: 3vh;
+    padding: 6px 0;
+}
 }

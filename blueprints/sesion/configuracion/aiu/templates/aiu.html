@@ -1,29 +1,74 @@
- {%extends "layout_configuracion.html" %}
+{%extends "layout_configuracion.html" %}
+
 {% block sesion %}
- <form id="seccion-aui" class="fregistro"  action="{{ url_for('aiu.aiu') }}" method="POST">
-               <legend>Administración Imprevistos Utilidad (A.I.U)</legend>
-               {% with messages = get_flashed_messages(with_categories=true) %}
-               {% if messages %}
-               <ul id="flash-messages2">
-                    {% for category, message in messages %}
-                    <li class="flash-message flash-{{ category }}">{{ message }}</li>
-                    {% endfor %}
-               </ul>
-               {% endif %}
-               {% endwith %}
-               <section class="contenido">
-                    {% for id, label, type, placeholder, valor in [
-                        ('administracion', 'Gastos Mensual Administración', 'text', 'Sume Todos los Gastos de Administración Mensual', ('$' + '{:,.0f}'.format(current_user.gastos) if current_user.gastos is not none else '')),
-                        ('imprevistos', 'Porcentaje Mensual para Imprevistos ', 'number', 'Calcule los Gastos de Imprevistos por Mes', current_user.imprevistos),
-                        ('utilidad', 'Porcentaje Utilidad', 'text', 'Cuánto es su utilidad en %', current_user.utilidad)
-                    ] %}
-                    <div class="div_datos_Empresa">
-                         <label>{{ label }}</label>
-                         <input id="{{ id }}" type="{{ type }}" class="campo2" placeholder="{{ placeholder }}" value="{{ valor }}" name="{{ id }}">
-                    </div>
-                    {% endfor %}
-               </section>
-               <button class="botonr" type="submit" name="update_aiu">Guardar Cambios</button>
-          </form>
+<style>
+  /* Solo afecta a este formulario */
+  .aiu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .aiu-grid .form-group {
+    margin-bottom: 0;
+  }
+  .aiu-grid .admin-field {
+    grid-column: 1 / 3;
+  }
+  .aiu-grid .form-input {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .aiu-grid .form-label {
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+  }
+  /* Para que el campo de utilidad ocupe todo el ancho debajo */
+  .utilidad-full {
+    grid-column: 1 / 3;
+    margin-top: 8px;
+  }
+</style>
+<form id="seccion-aui" class="form-form"  action="{{ url_for('aiu.aiu') }}" method="POST">
+  <h2 class="main-title-secondary">Administración Imprevistos Utilidad (A.I.U)</h2>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <ul id="flash-messages2">
+    {% for category, message in messages %}
+    <li class="flash-message flash-{{ category }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+  <section class="contenido aiu-grid">
+    <!-- Gastos Administración (ancho completo) -->
+    <div class="form-group admin-field">
+      <label class="form-label">Gastos Mensual Administración</label>
+      <input id="administracion" type="text" class="form-input" 
+        placeholder="Sume Todos los Gastos de Administración Mensual" 
+        value="{{ ('$' + '{:,.0f}'.format(current_user.gastos) if current_user.gastos is not none else '') }}" 
+        name="administracion">
+    </div>
+    <!-- Imprevistos -->
+    <div class="form-group percentage-field">
+      <label class="form-label">Porcentaje Mensual para Imprevistos</label>
+      <input id="imprevistos" type="number" class="form-input" 
+        placeholder="Calcule los Gastos de Imprevistos por Mes" 
+        value="{{ current_user.imprevistos }}" 
+        name="imprevistos">
+    </div>
+    <!-- Utilidad -->
+    <div class="form-group percentage-field utilidad-full">
+      <label class="form-label">Porcentaje Utilidad</label>
+      <input id="utilidad" type="text" class="form-input" 
+        placeholder="Cuánto es su utilidad en %" 
+        value="{{ current_user.utilidad }}" 
+        name="utilidad">
+    </div>
+  </section>
+  <button class="form-button" type="submit" name="update_aiu">Guardar Cambios</button>
+</form>
 {% endblock %}
 

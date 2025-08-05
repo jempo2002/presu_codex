@@ -1,0 +1,249 @@
+/* Contenedor principal */
+.container-config {
+    max-width: 90%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1vh 2vw;
+    min-height: calc(100vh - 140px); /* Altura específica considerando header (70px) + footer (70px) */
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px; /* Espacio para el header fijo */
+    margin-bottom: 70px; /* Espacio para el footer fijo */
+}
+
+/* Header con tabs */
+.config-header {
+    background: white;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem; /* Reducido margen */
+    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.05);
+    border: 0.0625rem solid #e5e7eb;
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.section-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8fafc;
+    padding: 0.375rem;
+    border-radius: 0.75rem;
+}
+
+.section-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem; /* Reducido padding */
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 500;
+    font-size: clamp(0.875rem, 2vw, 0.9375rem);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-height: 2.5rem; /* Reducido altura mínima */
+}
+
+.section-tab:hover {
+    color: #1e293b;
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-0.0625rem);
+}
+
+.section-tab.active {
+    background: white;
+    color: #1e293b;
+    box-shadow: 
+        0 0.25rem 0.75rem rgba(0, 0, 0, 0.1),
+        0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+    transform: translateY(-0.0625rem);
+}
+
+.section-tab.active::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.1875rem;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 0.125rem 0.125rem 0 0;
+}
+
+.tab-icon {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    opacity: 0.8;
+}
+
+.section-tab.active .tab-icon {
+    opacity: 1;
+}
+
+/* Main Content */
+.config-main-content {
+    background: white;
+    border-radius: 1.25rem;
+    padding: 1vh 4vw 2vh 4vw; /* Padding más estándar */
+    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.05);
+    border: 0.0625rem solid #e5e7eb;
+    animation: fadeInUp 0.6s ease-out;
+    width: 100%;
+    flex: 1;
+    overflow: hidden; /* Solo en escritorio */
+    max-height: calc(100vh - 140px); /* Altura máxima considerando header + footer */
+    position: relative; /* Asegurar posicionamiento correcto */
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(1.25rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Layout del grid para formularios */
+.config-main-content .contenido {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+/* Hacer que los selects ocupen 2 columnas cada uno */
+.config-main-content .form-group:has(select[name="departamento_empresa"]),
+.config-main-content .form-group:has(select[id*="departamento"]) {
+    grid-column: span 2; /* Ocupa 2 columnas */
+}
+
+.config-main-content .form-group:has(select[name="ciudad_empresa"]),
+.config-main-content .form-group:has(select[id*="ciudad"]) {
+    grid-column: span 2; /* Ocupa 2 columnas */
+}
+
+/* Si los selects tienen IDs específicos, usa esto como alternativa */
+.config-main-content .form-group:nth-last-child(-n+2) {
+    grid-column: span 2; /* Los últimos 2 elementos ocupan 2 columnas */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container-config {
+        margin-top: 70px; /* Mantener espacio del header */
+        margin-bottom: 0; /* Footer será relativo */
+        min-height: calc(100vh - 70px);
+        padding: 1vh 2vw;
+    }
+    
+    .config-main-content {
+        overflow-y: auto;
+        max-height: calc(100vh - 90px); /* Simplificado */
+        padding: 1vh 3vw 6vh 3vw;
+    }
+    
+    .config-main-content .contenido {
+        grid-template-columns: 1fr; /* Una sola columna */
+        gap: 1rem;
+        margin-bottom: 4rem;
+    }
+    
+    /* Resetear TODAS las reglas de columnas múltiples */
+    .config-main-content .form-group:has(select[name="departamento_empresa"]),
+    .config-main-content .form-group:has(select[id*="departamento"]),
+    .config-main-content .form-group:has(select[name="ciudad_empresa"]),
+    .config-main-content .form-group:has(select[id*="ciudad"]),
+    .config-main-content .form-group:nth-last-child(-n+2),
+    .config-main-content .form-group {
+        grid-column: span 1 !important; /* Forzar una sola columna */
+    }
+}
+
+@media (max-width: 480px) {
+    .container-config {
+        margin-top: 70px;
+        margin-bottom: 0;
+        min-height: calc(100vh - 70px);
+        padding: 0.5vh 1vw;
+    }
+    
+    .config-main-content {
+        overflow-y: auto;
+        max-height: calc(100vh - 80px); /* Simplificado */
+        padding: 1vh 2vw 8vh 2vw;
+        border-radius: 1rem;
+    }
+    
+    .config-main-content .contenido {
+        grid-template-columns: 1fr; /* Una sola columna */
+        gap: 1rem;
+        margin-bottom: 6rem;
+    }
+    
+    /* Asegurar que todos los elementos ocupen una sola columna */
+    .config-main-content .form-group {
+        grid-column: span 1 !important;
+    }
+    
+    .section-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 320px) {
+    .config-main-content {
+        max-height: calc(100vh - 75px);
+        padding: 0.5vh 1vw 6vh 1vw;
+    }
+    
+    .config-main-content .contenido {
+        grid-template-columns: 1fr; /* Una sola columna */
+        gap: 0.75rem;
+        margin-bottom: 5rem;
+    }
+    
+    /* Forzar una sola columna */
+    .config-main-content .form-group {
+        grid-column: span 1 !important;
+    }
+}
+
+/* Para resoluciones de escritorio específicas */
+@media (min-width: 1367px) and (max-width: 1920px) {
+    .config-main-content {
+        max-height: calc(100vh - 26vh); /* Reducido de 22vh a 26vh */
+        padding: 0.375vh 4vw 3vh 4vw; /* Reducido padding superior de 0.75vh a 0.375vh */
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1366px) {
+    .config-main-content {
+        max-height: calc(100vh - 22vh); /* Reducido de 18vh a 22vh */
+        padding: 0.25vh 4vw 2vh 4vw; /* Reducido padding superior de 0.5vh a 0.25vh */
+    }
+}
+
+/* Para resolución 1366x768 específicamente */
+@media (min-width: 1025px) and (max-width: 1366px) and (max-height: 768px) {
+    .config-main-content {
+        max-height: calc(100vh - 12vh); /* Reducido de 8vh a 12vh */
+        padding: 0.1vh 3vw 0.75vh 3vw; /* Reducido padding superior de 0.2vh a 0.1vh */
+        overflow: hidden;
+    }
+}
