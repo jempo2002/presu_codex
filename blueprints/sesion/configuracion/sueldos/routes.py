@@ -8,4 +8,12 @@ def sueldos():
     if request.method == 'POST':
         # Procesar el formulario
         pass
-    return render_template('configuracion_sueldos.html', **conf_mdo.as_dict())
+    return render_template('prestaciones.html', **conf_mdo.as_dict())
+
+@sueldo_bp.route('/parafiscales', methods=['GET'])
+def parafiscales():
+    return render_template('parafiscales.html')
+
+@sueldo_bp.route('/factores', methods=['GET'])
+def factores():
+    return render_template('factores.html')

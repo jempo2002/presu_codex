@@ -1,0 +1,543 @@
+{% extends 'layout_configuracion_prestaciones.html' %}
+
+{% block sesion %}
+{% include 'menu_prestaciones.html' %}
+<form id="seccion-prestaciones" action="" method="POST">
+    <legend>Calculadora de Prestaciones Sociales 2025</legend>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul id="flash-messages3">
+        {% for category, message in messages %}
+        <li class="flash-message flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <div class="prestaciones-layout">
+        <!-- Valores base a la izquierda -->
+        <div class="prestaciones-valores-base">
+            <h4>Valores Base</h4>
+            <div class="fila-valores-base fila-horizontal">
+                <div class="div_datos_Empresa">
+                    <label for="salario-minimo">
+                        Salario Mínimo Legal Vigente 
+                        <span class="admin-only" title="Solo modificable por administrador">🔒</span>
+                    </label>
+                    <input id="salario-minimo" type="text" class="campo2 readonly-field" 
+                        value="{{ '{:,}'.format(salario_minimo) if salario_minimo is not none else '' }}" 
+                        name="salario_minimo" readonly 
+                        title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                </div>
+                <div class="div_datos_Empresa">
+                    <label for="auxilio-transporte">
+                        Auxilio de Transporte 
+                        <span class="admin-only" title="Solo modificable por administrador">🔒</span>
+                    </label>
+                    <input id="auxilio-transporte" type="text" class="campo2 readonly-field" 
+                        value="{{ '{:,}'.format(auxilio_transporte) if auxilio_transporte is not none else '' }}" 
+                        name="auxilio_transporte" readonly 
+                        title="Solo modificable por administrador - Valor establecido según normatividad legal">
+                </div>
+            </div>
+        </div>
+        <!-- Tabla de prestaciones a la derecha o debajo -->
+        <div class="prestaciones-tabla-area">
+            <h4>Prestaciones Sociales por Tipo de Personal</h4>
+            <div class="tabla-prestaciones-container">
+                <table id="tabla-prestaciones" class="tabla-prestaciones">
+                    <thead>
+                                   <tr>
+                                        <th>Tipo de profesion</th>
+                                        <th>Factor <span class="editable-field">✏️</span></th>
+                                        <th>Salario Base <span class="editable-field">✏️</span></th>
+                                        <th>Aux. Transporte</th>
+                                        <th>Cesantías</th>
+                                        <th>Int. Cesantías</th>
+                                        <th>Prima</th>
+                                        <th>Vacaciones</th>
+                                        <th>EPS</th>
+                                        <th>ARL</th>
+                                        <th>Pensión</th>
+                                        <th>SENA</th>
+                                        <th>Caja Comp.</th>
+                                        <th>ICBF</th>
+                                        <th>Dotación</th>
+                                        <th>Incapacidad</th>
+                                        <th>Días T. No Labor.</th>
+                                        <th>Horas Extras</th>
+                                        <th>Factor Prest.</th>
+                                        <th>Total</th>
+                                        <th>Costo/Día</th>
+                                        <th>Costo/Hora</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <!-- Fila de información de porcentajes -->
+                                   <tr class="fila-porcentajes-info">
+                                        <td><strong>% APLICADO</strong></td>
+                                        <td>-</td>
+                                        <td>Base</td>
+                                        <td>Fijo</td>
+                                        <td>8.33%</td>
+                                        <td>12%</td>
+                                        <td>8.33%</td>
+                                        <td>4.166667%</td>
+                                        <td>8.5%</td>
+                                        <td>6.96%</td>
+                                        <td>12%</td>
+                                        <td>2%</td>
+                                        <td>4%</td>
+                                        <td>3%</td>
+                                        <td>5%</td>
+                                        <td>1%</td>
+                                        <td>26.67%</td>
+                                        <td>2%</td>
+                                        <td>Calc.</td>
+                                        <td>Suma</td>
+                                        <td>÷30</td>
+                                        <td>÷8</td>
+                                   </tr>
+                                   
+                                   <!-- Tipos de personal fijos -->
+                                   <tr data-tipo="ayudante" data-id="1">
+                                        <td><strong>AYUDANTE</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="1.423.500" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$118.625</td>
+                                        <td class="int-cesantias">$14.235</td>
+                                        <td class="prima">$118.625</td>
+                                        <td class="vacaciones">$59.312</td>
+                                        <td class="eps">$120.998</td>
+                                        <td class="arl">$99.076</td>
+                                        <td class="pension">$170.820</td>
+                                        <td class="sena">$28.470</td>
+                                        <td class="caja-comp">$56.940</td>
+                                        <td class="icbf">$42.705</td>
+                                        <td class="dotacion">$71.175</td>
+                                        <td class="incapacidad">$14.235</td>
+                                        <td class="tiempo-no-laborado">$379.647</td>
+                                        <td class="horas-extras">$28.470</td>
+                                        <td class="factor-prest">1.64</td>
+                                        <td class="total">$2.946.833</td>
+                                        <td class="costo-dia">$98.228</td>
+                                        <td class="costo-hora">$12.279</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="oficial" data-id="2">
+                                        <td><strong>OFICIAL</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.135.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$177.937</td>
+                                        <td class="int-cesantias">$21.352</td>
+                                        <td class="prima">$177.937</td>
+                                        <td class="vacaciones">$88.969</td>
+                                        <td class="eps">$181.496</td>
+                                        <td class="arl">$148.613</td>
+                                        <td class="pension">$256.230</td>
+                                        <td class="sena">$42.705</td>
+                                        <td class="caja-comp">$85.410</td>
+                                        <td class="icbf">$64.058</td>
+                                        <td class="dotacion">$106.763</td>
+                                        <td class="incapacidad">$21.353</td>
+                                        <td class="tiempo-no-laborado">$569.471</td>
+                                        <td class="horas-extras">$42.705</td>
+                                        <td class="factor-prest">2.46</td>
+                                        <td class="total">$4.320.249</td>
+                                        <td class="costo-dia">$144.008</td>
+                                        <td class="costo-hora">$18.001</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="maestro-de-obra" data-id="3">
+                                        <td><strong>MAESTRO DE OBRA</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.847.000" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$237.250</td>
+                                        <td class="int-cesantias">$28.470</td>
+                                        <td class="prima">$237.250</td>
+                                        <td class="vacaciones">$118.625</td>
+                                        <td class="eps">$241.995</td>
+                                        <td class="arl">$198.151</td>
+                                        <td class="pension">$341.640</td>
+                                        <td class="sena">$56.940</td>
+                                        <td class="caja-comp">$113.880</td>
+                                        <td class="icbf">$85.410</td>
+                                        <td class="dotacion">$142.350</td>
+                                        <td class="incapacidad">$28.470</td>
+                                        <td class="tiempo-no-laborado">$759.295</td>
+                                        <td class="horas-extras">$56.940</td>
+                                        <td class="factor-prest">3.29</td>
+                                        <td class="total">$5.693.666</td>
+                                        <td class="costo-dia">$189.789</td>
+                                        <td class="costo-hora">$23.724</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="residente-de-obra-arq-ing" data-id="4">
+                                        <td><strong>RESIDENTE DE OBRA ARQ/ING</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="3.558.750" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$296.562</td>
+                                        <td class="int-cesantias">$35.587</td>
+                                        <td class="prima">$296.562</td>
+                                        <td class="vacaciones">$148.281</td>
+                                        <td class="eps">$302.494</td>
+                                        <td class="arl">$247.689</td>
+                                        <td class="pension">$427.050</td>
+                                        <td class="sena">$71.175</td>
+                                        <td class="caja-comp">$142.350</td>
+                                        <td class="icbf">$106.763</td>
+                                        <td class="dotacion">$177.938</td>
+                                        <td class="incapacidad">$35.588</td>
+                                        <td class="tiempo-no-laborado">$949.119</td>
+                                        <td class="horas-extras">$71.175</td>
+                                        <td class="factor-prest">4.11</td>
+                                        <td class="total">$6.867.083</td>
+                                        <td class="costo-dia">$228.903</td>
+                                        <td class="costo-hora">$28.613</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="arquitecto-proyectista" data-id="5">
+                                        <td><strong>ARQUITECTO PROYECTISTA</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="3.558.750" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$296.562</td>
+                                        <td class="int-cesantias">$35.587</td>
+                                        <td class="prima">$296.562</td>
+                                        <td class="vacaciones">$148.281</td>
+                                        <td class="eps">$302.494</td>
+                                        <td class="arl">$247.689</td>
+                                        <td class="pension">$427.050</td>
+                                        <td class="sena">$71.175</td>
+                                        <td class="caja-comp">$142.350</td>
+                                        <td class="icbf">$106.763</td>
+                                        <td class="dotacion">$177.938</td>
+                                        <td class="incapacidad">$35.588</td>
+                                        <td class="tiempo-no-laborado">$949.119</td>
+                                        <td class="horas-extras">$71.175</td>
+                                        <td class="factor-prest">4.11</td>
+                                        <td class="total">$6.867.083</td>
+                                        <td class="costo-dia">$228.903</td>
+                                        <td class="costo-hora">$28.613</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="arquitecto-director-de-proyectos" data-id="6">
+                                        <td><strong>ARQUITECTO DIRECTOR DE PROYECTOS</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="3.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="4.982.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$415.187</td>
+                                        <td class="int-cesantias">$49.822</td>
+                                        <td class="prima">$415.187</td>
+                                        <td class="vacaciones">$207.594</td>
+                                        <td class="eps">$423.491</td>
+                                        <td class="arl">$346.765</td>
+                                        <td class="pension">$597.870</td>
+                                        <td class="sena">$99.645</td>
+                                        <td class="caja-comp">$199.290</td>
+                                        <td class="icbf">$149.468</td>
+                                        <td class="dotacion">$249.113</td>
+                                        <td class="incapacidad">$49.823</td>
+                                        <td class="tiempo-no-laborado">$1.328.766</td>
+                                        <td class="horas-extras">$99.645</td>
+                                        <td class="factor-prest">5.75</td>
+                                        <td class="total">$9.613.916</td>
+                                        <td class="costo-dia">$320.464</td>
+                                        <td class="costo-hora">$40.058</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="cadenero" data-id="7">
+                                        <td><strong>CADENERO</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.135.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$177.937</td>
+                                        <td class="int-cesantias">$21.352</td>
+                                        <td class="prima">$177.937</td>
+                                        <td class="vacaciones">$88.969</td>
+                                        <td class="eps">$181.496</td>
+                                        <td class="arl">$148.613</td>
+                                        <td class="pension">$256.230</td>
+                                        <td class="sena">$42.705</td>
+                                        <td class="caja-comp">$85.410</td>
+                                        <td class="icbf">$64.058</td>
+                                        <td class="dotacion">$106.763</td>
+                                        <td class="incapacidad">$21.353</td>
+                                        <td class="tiempo-no-laborado">$569.471</td>
+                                        <td class="horas-extras">$42.705</td>
+                                        <td class="factor-prest">2.46</td>
+                                        <td class="total">$4.320.249</td>
+                                        <td class="costo-dia">$144.008</td>
+                                        <td class="costo-hora">$18.001</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="topografo" data-id="8">
+                                        <td><strong>TOPÓGRAFO</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="3" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="4.270.500" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$355.875</td>
+                                        <td class="int-cesantias">$42.705</td>
+                                        <td class="prima">$355.875</td>
+                                        <td class="vacaciones">$177.937</td>
+                                        <td class="eps">$362.993</td>
+                                        <td class="arl">$297.227</td>
+                                        <td class="pension">$512.460</td>
+                                        <td class="sena">$85.410</td>
+                                        <td class="caja-comp">$170.820</td>
+                                        <td class="icbf">$128.115</td>
+                                        <td class="dotacion">$213.525</td>
+                                        <td class="incapacidad">$42.705</td>
+                                        <td class="tiempo-no-laborado">$1.138.942</td>
+                                        <td class="horas-extras">$85.410</td>
+                                        <td class="factor-prest">4.93</td>
+                                        <td class="total">$8.240.499</td>
+                                        <td class="costo-dia">$274.683</td>
+                                        <td class="costo-hora">$34.335</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="auxiliar-residente" data-id="9">
+                                        <td><strong>AUXILIAR RESIDENTE</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="3.558.750" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$0</td>
+                                        <td class="cesantias">$296.562</td>
+                                        <td class="int-cesantias">$35.587</td>
+                                        <td class="prima">$296.562</td>
+                                        <td class="vacaciones">$148.281</td>
+                                        <td class="eps">$302.494</td>
+                                        <td class="arl">$247.689</td>
+                                        <td class="pension">$427.050</td>
+                                        <td class="sena">$71.175</td>
+                                        <td class="caja-comp">$142.350</td>
+                                        <td class="icbf">$106.763</td>
+                                        <td class="dotacion">$177.938</td>
+                                        <td class="incapacidad">$35.588</td>
+                                        <td class="tiempo-no-laborado">$949.119</td>
+                                        <td class="horas-extras">$71.175</td>
+                                        <td class="factor-prest">4.11</td>
+                                        <td class="total">$6.867.083</td>
+                                        <td class="costo-dia">$228.903</td>
+                                        <td class="costo-hora">$28.613</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="supervisor-sst" data-id="10">
+                                        <td><strong>SUPERVISOR SST</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="2" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.847.000" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$237.250</td>
+                                        <td class="int-cesantias">$28.470</td>
+                                        <td class="prima">$237.250</td>
+                                        <td class="vacaciones">$118.625</td>
+                                        <td class="eps">$241.995</td>
+                                        <td class="arl">$198.151</td>
+                                        <td class="pension">$341.640</td>
+                                        <td class="sena">$56.940</td>
+                                        <td class="caja-comp">$113.880</td>
+                                        <td class="icbf">$85.410</td>
+                                        <td class="dotacion">$142.350</td>
+                                        <td class="incapacidad">$28.470</td>
+                                        <td class="tiempo-no-laborado">$759.295</td>
+                                        <td class="horas-extras">$56.940</td>
+                                        <td class="factor-prest">3.29</td>
+                                        <td class="total">$5.693.666</td>
+                                        <td class="costo-dia">$189.789</td>
+                                        <td class="costo-hora">$23.724</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="almacenista" data-id="11">
+                                        <td><strong>ALMACENISTA</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.5" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="2.135.250" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$177.937</td>
+                                        <td class="int-cesantias">$21.352</td>
+                                        <td class="prima">$177.937</td>
+                                        <td class="vacaciones">$88.969</td>
+                                        <td class="eps">$181.496</td>
+                                        <td class="arl">$148.613</td>
+                                        <td class="pension">$256.230</td>
+                                        <td class="sena">$42.705</td>
+                                        <td class="caja-comp">$85.410</td>
+                                        <td class="icbf">$64.058</td>
+                                        <td class="dotacion">$106.763</td>
+                                        <td class="incapacidad">$21.353</td>
+                                        <td class="tiempo-no-laborado">$569.471</td>
+                                        <td class="horas-extras">$42.705</td>
+                                        <td class="factor-prest">2.46</td>
+                                        <td class="total">$4.320.249</td>
+                                        <td class="costo-dia">$144.008</td>
+                                        <td class="costo-hora">$18.001</td>
+                                   </tr>
+                                   
+                                   <tr data-tipo="celador" data-id="12">
+                                        <td><strong>CELADOR</strong></td>
+                                        <td><input type="number" class="factor-input editable-field" value="1.2" step="0.1" min="0.1" onchange="manejarCambioFactor(this)" title="Campo editable por el usuario - Cambia automáticamente el salario base"></td>
+                                        <td><input type="text" class="salario-base-input editable-field" value="1.708.200" onchange="manejarCambioSalarioBase(this)" onfocus="limpiarFormatoSueldo(this)" onblur="aplicarFormatoSueldo(this)" title="Campo editable por el usuario"></td>
+                                        <td class="aux-transporte">$200.000</td>
+                                        <td class="cesantias">$142.350</td>
+                                        <td class="int-cesantias">$17.082</td>
+                                        <td class="prima">$142.350</td>
+                                        <td class="vacaciones">$71.175</td>
+                                        <td class="eps">$145.197</td>
+                                        <td class="arl">$118.891</td>
+                                        <td class="pension">$204.984</td>
+                                        <td class="sena">$34.164</td>
+                                        <td class="caja-comp">$68.328</td>
+                                        <td class="icbf">$51.246</td>
+                                        <td class="dotacion">$85.410</td>
+                                        <td class="incapacidad">$17.082</td>
+                                        <td class="tiempo-no-laborado">$455.557</td>
+                                        <td class="horas-extras">$34.164</td>
+                                        <td class="factor-prest">1.97</td>
+                                        <td class="total">$3.701.565</td>
+                                        <td class="costo-dia">$123.386</td>
+                                        <td class="costo-hora">$15.423</td>
+                                   </tr>
+                              </tbody>
+                         </table>
+            </div>
+        </div>
+    </div>
+</form>
+<style>
+.prestaciones-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    align-items: stretch;
+    /* Permite que el contenido crezca horizontalmente si es necesario */
+    overflow-x: visible;
+}
+
+.prestaciones-tabla-area {
+    width: 100%;
+    /* Permite que el área crezca si la tabla es muy ancha */
+    overflow-x: visible;
+}
+
+.tabla-prestaciones-container {
+    width: 100vw;
+    background: #f8fafc;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    padding: 12px 0;
+    max-width: none;
+    overflow-x: visible;
+    margin-left: calc(-50vw + 50%); /* Hace que el contenedor se pegue al borde izquierdo */
+    border-left: none;
+}
+
+.tabla-prestaciones {
+    border-collapse: collapse;
+    font-size: 0.85rem; /* Reduce el tamaño de fuente */
+    background: #fff;
+    border-radius: 8px;
+    overflow: visible;
+    margin: 0 auto;
+    table-layout: auto;
+    min-width: 1200px; /* Reduce el ancho mínimo */
+    width: auto;
+    max-width: none;
+}
+
+.tabla-prestaciones th,
+.tabla-prestaciones td {
+    padding: 2px 4px; /* Reduce el padding horizontal */
+    text-align: center;
+    white-space: nowrap;
+    font-size: 0.85rem; /* Reduce el tamaño de fuente */
+}
+
+.tabla-prestaciones th {
+    background: #e9eef3;
+    font-weight: 600;
+    color: #2d3a4a;
+}
+
+.tabla-prestaciones tr:nth-child(even) {
+    background: #f6f8fa;
+}
+
+.tabla-prestaciones th:first-child,
+.tabla-prestaciones td:first-child {
+    max-width: 110px;
+    min-width: 90px;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 0.82rem;
+}
+
+/* Responsive: solo en móviles permite scroll horizontal */
+@media (max-width: 1200px) {
+    .tabla-prestaciones-container {
+        overflow-x: auto;
+    }
+    .tabla-prestaciones {
+        min-width: 1200px;
+    }
+}
+
+.tabla-prestaciones input[type="number"].factor-input,
+.tabla-prestaciones input[type="text"].salario-base-input {
+    width: 70px;      /* Ajusta este valor para hacerlo más angosto o ancho */
+    min-width: 50px;
+    max-width: 90px;
+    font-size: 0.85rem;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+/* Opcional: para que el campo Factor sea aún más angosto */
+.tabla-prestaciones input[type="number"].factor-input {
+    width: 45px;
+    min-width: 35px;
+    max-width: 60px;
+    text-align: center;
+}
+
+.fila-valores-base.fila-horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    align-items: center;
+    width: 100%;
+    justify-content: stretch;
+}
+
+.div_datos_Empresa {
+    flex: 1 1 0;
+    min-width: 220px;
+    max-width: 500px;
+    display: flex; 
+    align-items: center;
+     gap: 10px; 
+}
+
+.div_datos_Empresa label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 1em;
+    white-space: nowrap;
+}
+
+.div_datos_Empresa input {
+    width: 100%;
+    min-width: 120px;
+    max-width: 100%;
+    margin-bottom: 0;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+</style>
+{% endblock %}

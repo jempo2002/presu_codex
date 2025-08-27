@@ -7,7 +7,6 @@
     min-height: calc(100vh - 140px); /* Altura específica considerando header (70px) + footer (70px) */
     display: flex;
     flex-direction: column;
-    margin-top: 70px; /* Espacio para el header fijo */
     margin-bottom: 70px; /* Espacio para el footer fijo */
 }
 

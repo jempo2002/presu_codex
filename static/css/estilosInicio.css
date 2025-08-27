@@ -5,8 +5,15 @@
   width: 100%;
 }
 
-.contenedor{
+.contenedor {
   margin-bottom: 130px;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  /* height: 100%; */ /* Elimina o comenta esta línea */
+  /* margin-top: 70px; */ /* Si existe, mantenla comentada o eliminada */
 }
 
 .banner-verde {
@@ -88,17 +95,20 @@
 }
 
 
+@media (max-width: 1366px) {
+  .contenedor {
+    margin-top: 70px; /* Ajusta este valor al alto real de tu header */
+  }
+}
+
+/* Si el header es más pequeño en móviles, puedes agregar otro media query */
 @media (max-width: 900px) {
-  .cuadro-contenido {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 18px 10px;
-    margin: 12px;
-    gap: 10px;
+  .contenedor {
+    margin-top: 56px; /* Ajusta según el alto del header en móvil */
   }
-  .cuadro img {
-    margin: 0 0 10px 0;
-    width: 48px;
-    height: 48px;
-  }
+}
+
+.seccion-Principal {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }

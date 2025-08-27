@@ -1,0 +1,169 @@
+{% extends 'layout_configuracion.html' %}
+
+{% block sesion %}
+{% include 'menu_prestaciones.html' %}
+<h4>Configuración de Aportes Parafiscales (%)</h4>
+<section class="contenido">
+    
+    <div class="config-porcentajes">
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-cesantias">Cesantías (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-cesantias" type="number" class="campo2 readonly-field" value="8.33" step="0.01" name="porc_cesantias" readonly title="Solo modificable por administrador - Calculado: 1 salario al año ÷ 12 meses">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-int-cesantias">Int. Cesantías (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-int-cesantias" type="number" class="campo2 readonly-field" value="12" step="0.01" name="porc_int_cesantias" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-prima">Prima (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-prima" type="number" class="campo2 readonly-field" value="8.33" step="0.01" name="porc_prima" readonly title="Solo modificable por administrador - Calculado: 1 salario al año ÷ 12 meses">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-vacaciones">Vacaciones (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-vacaciones" type="number" class="campo2 readonly-field" value="4.166667" step="0.01" name="porc_vacaciones" readonly title="Solo modificable por administrador - Calculado: 0.5 salarios al año ÷ 12 meses">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-eps">EPS (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-eps" type="number" class="campo2 readonly-field" value="8.5" step="0.01" name="porc_eps" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-arl">ARL (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-arl" type="number" class="campo2 readonly-field" value="6.96" step="0.01" name="porc_arl" readonly title="Solo modificable por administrador">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-pension">Pensión (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-pension" type="number" class="campo2 readonly-field" value="12" step="0.01" name="porc_pension" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-sena">SENA (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-sena" type="number" class="campo2 readonly-field" value="2" step="0.01" name="porc_sena" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-caja-comp">Caja Comp. (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-caja-comp" type="number" class="campo2 readonly-field" value="4" step="0.01" name="porc_caja_comp" readonly title="Solo modificable por administrador">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-icbf">ICBF (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-icbf" type="number" class="campo2 readonly-field" value="3" step="0.01" name="porc_icbf" readonly title="Solo modificable por administrador">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-dotacion">Dotación (%) <span class="editable-field">✏️</span></label>
+                                   <input id="porc-dotacion" type="number" class="campo2 editable-field" value="5" step="0.01" name="porc_dotacion" onchange="calcularPrestaciones()" title="Campo editable por el usuario">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-incapacidad">Incapacidad (%) <span class="editable-field">✏️</span></label>
+                                   <input id="porc-incapacidad" type="number" class="campo2 editable-field" value="1" step="0.01" name="porc_incapacidad" onchange="calcularPrestaciones()" title="Campo editable por el usuario">
+                              </div>
+                         </div>
+                         <div class="fila-porcentajes">
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-tiempo-no-laborado">Días T. No Labor. (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-tiempo-no-laborado" type="number" class="campo2 readonly-field" value="26.67" step="0.01" name="porc_tiempo_no_laborado" readonly title="Solo modificable por administrador - Días tiempo no laborado">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <label for="porc-horas-extras">Horas Extras (%) <span class="admin-only">🔒</span></label>
+                                   <input id="porc-horas-extras" type="number" class="campo2 readonly-field" value="2" step="0.01" name="porc_horas_extras" readonly title="Solo modificable por administrador - Horas extras">
+                              </div>
+                              <div class="div_datos_Empresa">
+                                   <!-- Espacio vacío para mantener la estructura -->
+                              </div>
+                         </div>
+                    </div>
+</section>
+<style>
+     .contenido {
+  padding: 24px;
+}
+
+/* Título */
+.contenido h4 {
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+/* ---- DISTRIBUCIÓN EN GRID ---- */
+.config-porcentajes {
+  display: grid;
+  /* 3 columnas en desktop, se ajusta solo hasta 1 col. en pantallas pequeñas */
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 16px 24px; /* fila x columna */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mantén tu HTML tal cual: las “filas” no generan cajas, dejan pasar a sus hijos al grid */
+.fila-porcentajes {
+  display: contents;
+}
+
+/* Tarjetitas de cada campo */
+.div_datos_Empresa {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  min-width: 0; /* evita overflow del grid */
+}
+
+/* Etiquetas e iconos */
+.div_datos_Empresa label {
+  font-size: 0.92rem;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.admin-only, .editable-field {
+  opacity: .75;
+  font-size: .9em;
+}
+
+/* Campos */
+.campo2 {
+  width: 100%;
+  height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+}
+
+.campo2:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+/* Apariencia de “solo lectura” */
+.readonly-field {
+  background: #f8fafc;
+  color: #475569;
+}
+
+/* Responsivo */
+@media (max-width: 1200px) {
+  .config-porcentajes {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .config-porcentajes {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+{% endblock %}
