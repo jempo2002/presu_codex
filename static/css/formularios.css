@@ -1,137 +1,118 @@
-/* Reset y configuración base para la página de login */
+/* Reset y configuración base */
 .form-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  margin: 50px auto;
+  width: 100%;
+  max-width: 100vw;
+  background: none;
+  padding: 0;
   box-sizing: border-box;
-  margin-top: -70px; 
-  padding-top: 90px; 
-  padding-bottom: 120px; 
 }
 
-.form-wrapper {
+/* Contenedor principal */
+.form-wrapper, .contenido-inicio, .form-content {
+  max-width: 900px; /* Aumenta el ancho máximo en escritorio */
+  margin: 0 auto;
   width: 100%;
-  max-width: 1200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  transition: max-width 0.3s;
 }
 
-.form-content {
-  text-align: center;
-  width: 100%;
-  max-width: 50vw;
-}
-
-/* Header del form */
+/* Header */
 .form-header {
-  margin-bottom: 50px;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.main-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin: 0;
-  line-height: 1.1;
-}
-
+.main-title,
 .main-title-secondary {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 0 0 20px 0;
+  margin: 0 0 1rem 0;
   line-height: 1.1;
 }
 
 .main-subtitle {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #6c757d;
-  margin: 0;
-  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
   font-weight: 400;
 }
 
 /* Contenedor del formulario */
 .form-form-container {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  padding: 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  padding: 2rem 2rem; /* Cambia de 0 a 2rem para escritorio */
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  border: 1px solid #f0f0f0;
+  width: 100%; /* Asegura que ocupe todo el ancho del padre */
+  box-sizing: border-box;
+  margin-top: 2.5rem; /* Ajusta según lo que necesites */
 }
 
 .form-form {
-  padding: 50px 40px;
+  padding: 0; /* El padding lo da el contenedor */
   width: 100%;
   box-sizing: border-box;
+  margin-top: 2.5rem; /* Ajusta según lo que necesites */
 }
 
 .form-title {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 0 0 35px 0;
+  margin: 0 0 1.5rem 0;
   text-align: center;
 }
 
 /* Grupos de campos */
 .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 1.2rem;
 }
 
-/* Inputs del formulario */
+/* Inputs */
 .form-input {
   width: 100%;
-  padding: 12px 20px; /* Reducido de 18px a 12px el padding vertical */
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #e9ecef;
+  border-radius: 10px;
   font-size: 1rem;
   background: #f8f9fa;
   color: #2c3e50;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
-  outline: none;
 }
 
 .form-input:focus {
   border-color: #4A90E2;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
-  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.08);
 }
 
 .form-input::placeholder {
   color: #adb5bd;
-  font-weight: 400;
 }
 
-/* Botón de form */
+/* Botón */
 .form-button {
   width: 100%;
-  padding: 18px;
+  padding: 1rem;
   background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
+  border-radius: 10px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: none;
-  letter-spacing: 0.5px;
-  margin-top: 10px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  margin-top: 1rem;
 }
 
 .form-button:hover {
   background: linear-gradient(135deg, #357ABD 0%, #2C5F8A 100%);
+  box-shadow: 0 4px 16px rgba(74,144,226,0.15);
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
 }
 
 .form-button:active {
@@ -140,96 +121,95 @@
 
 /* Alertas */
 .alert-container {
-  margin-bottom: 25px;
+  margin-bottom: 1.2rem;
 }
 
 .alert {
-  background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+  background: #ffe6e6;
   color: #d63031;
-  padding: 15px 20px;
-  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
   font-size: 0.95rem;
   border-left: 4px solid #d63031;
-  text-align: left;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   font-weight: 500;
 }
+.contenido {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-title,
-  .main-title-secondary {
-    font-size: 1.7rem;
-  }
-  
-  .form-form {
-    padding: 35px 25px 50px 25px; /* Aumentado padding inferior de 35px a 50px */
-  }
-  
-  .form-input,
-  .form-button {
-    padding: 12px 16px;
-  }
+.form-group {
+  flex: 1 1 100%; /* Por defecto, cada campo ocupa el 100% */
+}
 
-  .form-content,
-  .form-form-container {
-    max-width: 95vw;
-    min-width: 0;
+/* Ajuste para AIU grid */
+.aiu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 24px;
+  margin-top: 1.5rem;
+  box-sizing: border-box;
+}
+.utilidad-full {
+  grid-column: 1 / 3;
+}
+
+@media (max-width: 900px) {
+  .aiu-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
-  
-  .form-page {
-    margin-top: -150px;
-  }
-  
-  /* Asegurar que el botón tenga espacio */
-  .form-button {
-    margin-top: 2rem;
-    margin-bottom: 3rem; /* Espacio adicional debajo del botón */
+  .utilidad-full {
+    grid-column: 1 / 2 !important;
   }
 }
 
-@media (max-width: 480px) {
-  .main-title,
-  .main-title-secondary {
-    font-size: 1.7rem;
+/* Responsive */
+@media (max-width: 600px) {
+  .form-wrapper, .contenido-inicio, .form-content, .form-form-container {
+    max-width: 100vw;
+    padding: 0;
   }
-  
+  .form-form-container {
+    padding: 0.5rem 0.2rem; /* Menos padding en móviles */
+  }
   .form-form {
-    padding: 35px 25px 60px 25px; /* Aumentado padding inferior a 60px */
+    padding: 0;
   }
-  
-  .form-input,
-  .form-button {
-    padding: 10px 16px;
+  .main-title, .main-title-secondary {
+    font-size: 1.3rem;
   }
 
-  .form-content,
+}
+
+/* Responsive para pantallas medianas */
+@media (max-width: 1000px) {
+  .form-wrapper, .contenido-inicio, .form-content, .form-form-container {
+    max-width: 98vw;
+    padding: 0;
+  }
   .form-form-container {
-    max-width: 95vw;
-    min-width: 0;
-  }
-  
-  .form-page {
-    margin-top: -150px;
-  }
-  
-  /* Más espacio para el botón en móviles pequeños */
-  .form-button {
-    margin-top: 2rem;
-    margin-bottom: 4rem; /* Aún más espacio */
-    width: 100%; /* Que ocupe todo el ancho */
+    padding: 1rem 0.5rem; /* Menos padding en pantallas medianas */
   }
 }
 
-/* Para pantallas muy pequeñas */
-@media (max-width: 320px) {
-  .form-form {
-    padding: 25px 15px 50px 15px; /* Padding inferior generoso */
+@media (min-width: 900px) {
+  .form-group {
+    flex: 1 1 45%; /* Dos columnas */
+    min-width: 250px;
   }
-  
-  .form-button {
-    margin-top: 1.5rem;
-    margin-bottom: 3rem;
-    width: 100%;
-  }
+}
+
+.aiu-grid .form-group {
+  width: 100%;
+}
+
+.aiu-grid .form-input {
+  width: 100%;
+  box-sizing: border-box;
 }
