@@ -2,7 +2,8 @@ from models import db
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # En la BD existente la PK es 'id_usuario' (no 'id')
+    id_usuario = db.Column('id_usuario', db.Integer, primary_key=True, autoincrement=True)
     correo = db.Column(db.String(25), nullable=False, index=True)
     contrasena = db.Column(db.String(255), nullable=False)
     nombre = db.Column(db.String(50), nullable=False)
@@ -33,4 +34,5 @@ class Usuario(db.Model):
         return False
 
     def get_id(self):
-        return str(self.id)
+        # Flask-Login usa este valor como identificador del usuario
+        return str(self.id_usuario)
