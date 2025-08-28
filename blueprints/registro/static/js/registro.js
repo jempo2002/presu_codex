@@ -33,6 +33,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
+        // Validar confirmación de contraseña
+        const pass1 = document.querySelector('input[name="contrasena"]').value;
+        const pass2 = document.getElementById("confirmarContrasenaUsuario").value;
+        if (pass1 !== pass2) {
+            padre.innerHTML += "Las contrasenas no coinciden</br>";
+            isValid = false;
+        }
+
         if (isValid) {
             enviar.submit();
         }

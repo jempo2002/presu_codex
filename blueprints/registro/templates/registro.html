@@ -39,6 +39,10 @@
             <input id="contraseñaUsuario" class="form-input" type="password" name="contrasena" placeholder="Contraseña" required>
           </div>
           
+          <div class="form-group">
+            <input id="confirmarContrasenaUsuario" class="form-input" type="password" name="conf_contrasena" placeholder="Confirmar Contrasena" required>
+          </div>
+          
           <button id="form-registro" class="form-button" type="submit">Registrar</button>
           
           <p id="error_registro" class="errorFormulario"></p>
@@ -48,7 +52,7 @@
   </div>
 </div>
 
-<script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+<script src="{{ url_for('registro.static', filename='js/registro.js') }}"></script>
 
 {% endblock %}
 
