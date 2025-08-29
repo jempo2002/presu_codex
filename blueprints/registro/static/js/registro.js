@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
             errorMessage: "Escriba Nombre valido</br>"
         },
         {
+            elementId: "nitUsuario",
+            regex: /^\d{1,10}$/,
+            errorMessage: "Ingrese un número de identificación válido (solo números, máximo 10 dígitos)</br>"
+        },
+        {
             elementId: "correoUsuario",
             regex: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
             errorMessage: "Escriba un email valido</br>"
