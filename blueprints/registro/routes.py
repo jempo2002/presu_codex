@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash
 from models import db
 from sqlalchemy.exc import SQLAlchemyError
 from . import registro_bp
+import re
 
 
  # Registro usuario usando SQLAlchemy
@@ -14,6 +15,11 @@ def registro():
         correo = request.form['corrCliente']
         contrasena = request.form['contrasena']
         conf_contrasena = request.form.get('conf_contrasena', '')
+        nit = re.sub(r'\D', '', request.form.get('nit', ''))
+
+        if not nit or len(nit) > 10:
+            flash("Número de identificación inválido", 'error')
+            return render_template('registro.html')
 
         # Validar que las contraseñas coincidan
         if contrasena != conf_contrasena:
@@ -25,6 +31,11 @@ def registro():
         if existente:
             flash("¡Usuario ya Existe!", 'error')
             return render_template('registro.html')
+
+        existente_nit = Usuario.query.filter_by(nit=nit).first()
+        if existente_nit:
+            flash("El número de identificación ya está registrado", 'error')
+            return render_template('registro.html')
         try:
             nuevo_usuario = Usuario(
                 correo=correo,
@@ -32,7 +43,7 @@ def registro():
                 nombre=nombre,
                 telefono_empresa="",
                 nombre_representante="",
-                nit=None,
+                nit=nit,
                 logo="",
                 telefono_representante="",
                 direccion="",

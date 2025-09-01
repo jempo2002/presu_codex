@@ -9,7 +9,7 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     telefono_empresa = db.Column(db.String(10), nullable=False)
     nombre_representante = db.Column(db.String(50), nullable=False)
-    nit = db.Column(db.Integer, nullable=True, index=True)
+    nit = db.Column(db.String(10), nullable=False, unique=True, index=True)
     logo = db.Column(db.String(50), nullable=False)
     telefono_representante = db.Column(db.String(10), nullable=False)
     direccion = db.Column(db.String(50), nullable=False)
