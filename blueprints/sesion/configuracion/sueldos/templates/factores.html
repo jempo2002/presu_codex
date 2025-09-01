@@ -602,4 +602,75 @@
     color: #4a5568;
 }
 </style>
+<script>
+function calcularEspecialidadGrid(input) {
+    const factor = parseFloat(input.value) || 0;
+    const especialidad = input.dataset.especialidad;
+    const container = input.closest('.especialidad-container');
+    
+    // Si factor es 0, mantener valores existentes
+    if (factor === 0) {
+        return;
+    }
+
+    // Obtener valores base (cuando factor = 1)
+    const valoresBase = {
+        oficial: {
+            mensual: 3687700,
+            diario: 122923,
+            hora: 15365
+        },
+        ayudante: {
+            mensual: 2538717,
+            diario: 84624,
+            hora: 10578
+        }
+    };
+
+    // Calcular nuevos valores para oficial y ayudante
+    const oficial = {
+        mensual: valoresBase.oficial.mensual * factor,
+        diario: valoresBase.oficial.diario * factor,
+        hora: valoresBase.oficial.hora * factor
+    };
+
+    const ayudante = {
+        mensual: valoresBase.ayudante.mensual * factor,
+        diario: valoresBase.ayudante.diario * factor,
+        hora: valoresBase.ayudante.hora * factor
+    };
+
+    // Actualizar valores en la tabla
+    container.querySelector(`[data-especialidad="${especialidad}"][data-tipo="oficial"].sueldo-mensual`).textContent = 
+        `$${oficial.mensual.toFixed(0)}`;
+    container.querySelector(`[data-especialidad="${especialidad}"][data-tipo="oficial"].sueldo-diario`).textContent = 
+        `$${oficial.diario.toFixed(0)}`;
+    container.querySelector(`[data-especialidad="${especialidad}"][data-tipo="oficial"].sueldo-hora`).textContent = 
+        `$${oficial.hora.toFixed(0)}`;
+
+    container.querySelector(`[data-especialidad="${especialidad}"][data-tipo="ayudante"].sueldo-mensual`).textContent = 
+        `$${ayudante.mensual.toFixed(0)}`;
+    container.querySelector(`[data-especialidad="${especialidad}"][data-tipo="ayudante"].sueldo-diario`).textContent = 
+        `$${ayudante.diario.toFixed(0)}`;
+    container.querySelector(`[data-especialidad="${especialidad}"][data-tipo="ayudante"].sueldo-hora`).textContent = 
+        `$${ayudante.hora.toFixed(0)}`;
+
+    // Calcular y actualizar cuadrillas
+    const cuadrillas = container.querySelectorAll(`[data-especialidad="${especialidad}"][data-config]`);
+    cuadrillas.forEach(cuadrilla => {
+        const config = cuadrilla.dataset.config;
+        const [oficiales, ayudantes] = config.split('-').map(Number);
+        
+        const valorCuadrilla = (oficial.diario * oficiales + ayudante.diario * ayudantes);
+        
+        // Actualizar los tres valores de la cuadrilla
+        container.querySelector(`[data-especialidad="${especialidad}"][data-config="${config}"].cuadrilla-sueldo`).textContent = 
+            `$${valorCuadrilla.toFixed(0)}`;
+        container.querySelector(`[data-especialidad="${especialidad}"][data-config="${config}"].cuadrilla-valor`).textContent = 
+            `$${valorCuadrilla.toFixed(0)}`;
+        container.querySelector(`[data-especialidad="${especialidad}"][data-config="${config}"].cuadrilla-hora`).textContent = 
+            `$${(valorCuadrilla / 8).toFixed(0)}`;
+    });
+}
+</script>
 {% endblock %}
