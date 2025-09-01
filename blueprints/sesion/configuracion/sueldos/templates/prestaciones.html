@@ -540,4 +540,81 @@
     box-sizing: border-box;
 }
 </style>
+<script>
+function manejarCambioFactor(input) {
+    const fila = input.closest('tr');
+    const factor = parseFloat(input.value) || 0;
+    const salarioMinimo = {{ salario_minimo|default(0)|int }};
+
+    // Si factor es 0, mantener valores existentes
+    if (factor === 0) {
+        return; // Sale de la función sin modificar nada
+    }
+
+    // Calcular nuevo salario base
+    const salarioBase = salarioMinimo * factor;
+    
+    // Determinar si aplica auxilio de transporte (solo para factores <= 2)
+    const auxTransporte = factor <= 2 ? 200000 : 0;
+    
+    // Cálculos de prestaciones
+    const cesantias = salarioBase * 0.0833;
+    const intCesantias = salarioBase * 0.01;
+    const prima = salarioBase * 0.0833;
+    const vacaciones = salarioBase * 0.04166667;
+    const eps = salarioBase * 0.085;
+    const arl = salarioBase * 0.0696;
+    const pension = salarioBase * 0.12;
+    const sena = salarioBase * 0.02;
+    const cajaComp = salarioBase * 0.04;
+    const icbf = salarioBase * 0.03;
+    const dotacion = salarioBase * 0.05;
+    const incapacidad = salarioBase * 0.01;
+    const tiempoNoLaborado = salarioBase * 0.2667;
+    const horasExtras = salarioBase * 0.02;
+
+    // Calcular total y factores
+    const total = salarioBase + auxTransporte + cesantias + intCesantias + 
+                 prima + vacaciones + eps + arl + pension + sena + 
+                 cajaComp + icbf + dotacion + incapacidad + 
+                 tiempoNoLaborado + horasExtras;
+
+    const factorPrest = (total / salarioBase).toFixed(2);
+    const costoDia = (total / 30).toFixed(0);
+    const costoHora = (costoDia / 8).toFixed(0);
+
+    // Actualizar campos en la tabla
+    fila.querySelector('.salario-base-input').value = salarioBase.toFixed(0);
+    fila.querySelector('.aux-transporte').textContent = `$${auxTransporte.toFixed(0)}`;
+    fila.querySelector('.cesantias').textContent = `$${cesantias.toFixed(0)}`;
+    fila.querySelector('.int-cesantias').textContent = `$${intCesantias.toFixed(0)}`;
+    fila.querySelector('.prima').textContent = `$${prima.toFixed(0)}`;
+    fila.querySelector('.vacaciones').textContent = `$${vacaciones.toFixed(0)}`;
+    fila.querySelector('.eps').textContent = `$${eps.toFixed(0)}`;
+    fila.querySelector('.arl').textContent = `$${arl.toFixed(0)}`;
+    fila.querySelector('.pension').textContent = `$${pension.toFixed(0)}`;
+    fila.querySelector('.sena').textContent = `$${sena.toFixed(0)}`;
+    fila.querySelector('.caja-comp').textContent = `$${cajaComp.toFixed(0)}`;
+    fila.querySelector('.icbf').textContent = `$${icbf.toFixed(0)}`;
+    fila.querySelector('.dotacion').textContent = `$${dotacion.toFixed(0)}`;
+    fila.querySelector('.incapacidad').textContent = `$${incapacidad.toFixed(0)}`;
+    fila.querySelector('.tiempo-no-laborado').textContent = `$${tiempoNoLaborado.toFixed(0)}`;
+    fila.querySelector('.horas-extras').textContent = `$${horasExtras.toFixed(0)}`;
+    fila.querySelector('.factor-prest').textContent = factorPrest;
+    fila.querySelector('.total').textContent = `$${total.toFixed(0)}`;
+    fila.querySelector('.costo-dia').textContent = `$${costoDia}`;
+    fila.querySelector('.costo-hora').textContent = `$${costoHora}`;
+}
+
+// Función para limpiar formato al enfocar
+function limpiarFormatoSueldo(input) {
+    input.value = input.value.replace(/[$.]/g, '');
+}
+
+// Función para aplicar formato al perder foco
+function aplicarFormatoSueldo(input) {
+    let valor = parseFloat(input.value.replace(/[$.]/g, '')) || 0;
+    input.value = valor.toFixed(0);
+}
+</script>
 {% endblock %}
